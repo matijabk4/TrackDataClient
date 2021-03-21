@@ -152,6 +152,7 @@ public class RaceController {
         prepareView(formMode);
         frmRace.getLblCU().setText(currentUser.getFirstname() + " " + currentUser.getLastname());
         frmRace.setVisible(true);
+        frmRace.setResizable(false);
     }
 
     private void prepareView(FormMode formMode) {

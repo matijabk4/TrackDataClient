@@ -5,14 +5,20 @@
  */
 package rs.ac.bg.fon.ps.view.controller;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import rs.ac.bg.fon.ps.communication.Communication;
 import rs.ac.bg.fon.ps.domain.RacingTeam;
 import rs.ac.bg.fon.ps.domain.User;
@@ -32,6 +38,30 @@ public class TeamViewAllController {
     public TeamViewAllController(FrmViewTeams frmViewTeams) {
         this.frmViewTeams = frmViewTeams;
         addActionListener();
+        addFocusListener();
+    }
+
+    private void addFocusListener() {
+        frmViewTeams.getTxtSearchAddFocus(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (frmViewTeams.getTxtSearch().getText().equals("Search...")) {
+                    frmViewTeams.getTxtSearch().setForeground(Color.black);
+                    frmViewTeams.getTxtSearch().setText("");
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (frmViewTeams.getTxtSearch().getText().isEmpty()) {
+                    frmViewTeams.getTxtSearch().setText("Search...");
+                    frmViewTeams.getTxtSearch().setForeground(Color.gray);
+
+                } else {
+                    frmViewTeams.getTxtSearch().setForeground(Color.black);
+                }
+            }
+        });
     }
 
     private void addActionListener() {
@@ -49,14 +79,22 @@ public class TeamViewAllController {
                 }
             }
         });
-
         frmViewTeams.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowActivated(WindowEvent e) {
+                fillTblTeams();
+                centerTableValues();
+                searchFieldSettings();
+            }
+
+        });
+        /*frmViewTeams.addWindowListener(new WindowAdapter() {
             @Override
             public void windowActivated(WindowEvent e) {
                 fillTblTeams();
             }
 
-        });
+        });*/
         frmViewTeams.getBtnAddAddActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -71,10 +109,13 @@ public class TeamViewAllController {
         prepareView();
         frmViewTeams.getLblCu().setText(currentUser.getFirstname() + " " + currentUser.getLastname());
         frmViewTeams.setVisible(true);
+
     }
 
     private void prepareView() {
-        frmViewTeams.setTitle("View riders");
+        frmViewTeams.getTblTeams().getTableHeader().setResizingAllowed(false);
+        frmViewTeams.getTblTeams().getTableHeader().setReorderingAllowed(false);
+        frmViewTeams.setResizable(false);
         //fillTblRiders();
     }
 
@@ -94,4 +135,29 @@ public class TeamViewAllController {
         fillTblTeams();
     }
 
+    private void centerTableValues() {
+        // center column names
+        ((DefaultTableCellRenderer) frmViewTeams.getTblTeams().getTableHeader().getDefaultRenderer())
+                .setHorizontalAlignment(JLabel.CENTER);
+
+        // center column values
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        for (int col = 0; col < frmViewTeams.getTblTeams().getColumnCount(); col++) {
+            frmViewTeams.getTblTeams().getColumnModel().getColumn(col).setCellRenderer(centerRenderer);
+        }
+
+        //frmViewTeams.getTblTeams().setAutoCreateRowSorter(true);
+    }
+
+    private void searchFieldSettings() {
+
+        if (!frmViewTeams.getTxtSearch().getText().equals("Search...")) {
+            frmViewTeams.getTxtSearch().setText("Search...");
+            frmViewTeams.getTxtSearch().setForeground(Color.gray);
+
+        }
+
+    }
 }

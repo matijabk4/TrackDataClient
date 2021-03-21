@@ -31,6 +31,8 @@ public class LoginController {
 
     public void openForm() {
         frmLogin.setVisible(true);
+        frmLogin.setResizable(false);
+        frmLogin.setTitle("TrackData v1 - Login");
     }
 
     private void addActionListener() {

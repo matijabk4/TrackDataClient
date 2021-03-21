@@ -5,17 +5,22 @@
  */
 package rs.ac.bg.fon.ps.view.controller;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
 import rs.ac.bg.fon.ps.communication.Communication;
 import rs.ac.bg.fon.ps.domain.Race;
 import rs.ac.bg.fon.ps.domain.RaceItem;
@@ -40,6 +45,30 @@ public class RaceViewAllController {
     public RaceViewAllController(FrmViewRaces frmViewRaces) {
         this.frmViewRaces = frmViewRaces;
         addActionListener();
+        addFocusListener();
+    }
+
+    private void addFocusListener() {
+        frmViewRaces.getTxtSearchAddFocus(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (frmViewRaces.getTxtSearch().getText().equals("Search...")) {
+                    frmViewRaces.getTxtSearch().setForeground(Color.black);
+                    frmViewRaces.getTxtSearch().setText("");
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (frmViewRaces.getTxtSearch().getText().isEmpty()) {
+                    frmViewRaces.getTxtSearch().setText("Search...");
+                    frmViewRaces.getTxtSearch().setForeground(Color.gray);
+
+                } else {
+                    frmViewRaces.getTxtSearch().setForeground(Color.black);
+                }
+            }
+        });
     }
 
     private void addActionListener() {
@@ -97,7 +126,7 @@ public class RaceViewAllController {
                     }*/
                     List<RaceItem> items = getRaceItemsForRace(r);
                     r.setItems(items);
-                    
+
                     MainCordinator.getInstance().addParam(Constants.PARAM_RACE, r);
                     MainCordinator.getInstance().openRaceDetailsRiderForm();
 
@@ -107,20 +136,34 @@ public class RaceViewAllController {
             }
 
         });
+        frmViewRaces.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowActivated(WindowEvent e) {
+                fillTblRaces();
+                centerTableValues();
+                searchFieldSettings();
+            }
+
+        });
     }
 
     public void openForm() {
         frmViewRaces.setLocationRelativeTo(MainCordinator.getInstance().getMainContoller().getFrmMain());
         User currentUser = (User) MainCordinator.getInstance().getParam(Constants.CURRENT_USER);
         prepareView();
-        frmViewRaces.setSize(860, 360);
+
+        frmViewRaces.setSize(860, 400);
         frmViewRaces.getjPanel1().setVisible(false);
         frmViewRaces.getLblCU().setText(currentUser.getFirstname() + " " + currentUser.getLastname());
         frmViewRaces.setVisible(true);
+        frmViewRaces.setResizable(false);
     }
 
     private void prepareView() {
-        frmViewRaces.setTitle("View races");
+        frmViewRaces.getTblRaces().getTableHeader().setResizingAllowed(false);
+        frmViewRaces.getTblRaces().getTableHeader().setReorderingAllowed(false);
+        frmViewRaces.getTblResults().getTableHeader().setResizingAllowed(false);
+        frmViewRaces.getTblResults().getTableHeader().setReorderingAllowed(false);
         //fillTblRiders();
     }
 
@@ -163,7 +206,7 @@ public class RaceViewAllController {
     private List<RaceItem> getRaceItemsForRace(Race r) {
         List<RaceItem> items = new ArrayList<>();
         try {
-            items=Communication.getInstance().getRaceItems(r.getId());
+            items = Communication.getInstance().getRaceItems(r.getId());
         } catch (Exception ex) {
             Logger.getLogger(RaceViewAllController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -174,4 +217,29 @@ public class RaceViewAllController {
         fillTblRaces();
     }
 
+    private void centerTableValues() {
+        // center column names
+        ((DefaultTableCellRenderer) frmViewRaces.getTblRaces().getTableHeader().getDefaultRenderer())
+                .setHorizontalAlignment(JLabel.CENTER);
+
+        // center column values
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        for (int col = 0; col < frmViewRaces.getTblRaces().getColumnCount(); col++) {
+            frmViewRaces.getTblRaces().getColumnModel().getColumn(col).setCellRenderer(centerRenderer);
+        }
+
+        //frmViewTeams.getTblTeams().setAutoCreateRowSorter(true);
+    }
+
+    private void searchFieldSettings() {
+
+        if (!frmViewRaces.getTxtSearch().getText().equals("Search...")) {
+            frmViewRaces.getTxtSearch().setText("Search...");
+            frmViewRaces.getTxtSearch().setForeground(Color.gray);
+
+        }
+
+    }
 }

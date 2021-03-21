@@ -142,6 +142,7 @@ public class TeamController {
         prepareView(formMode);
         frmTeam.getLblCU().setText(currentUser.getFirstname() + " " + currentUser.getLastname());
         frmTeam.setVisible(true);
+        frmTeam.setResizable(false);
     }
 
     private void prepareView(FormMode formMode) {

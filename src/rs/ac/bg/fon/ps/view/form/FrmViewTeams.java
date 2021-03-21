@@ -6,7 +6,13 @@
 package rs.ac.bg.fon.ps.view.form;
 
 import java.awt.event.ActionListener;
+import java.awt.event.FocusListener;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.RowFilter;
+import javax.swing.table.TableRowSorter;
+import rs.ac.bg.fon.ps.view.form.component.table.RiderTableModel;
+import rs.ac.bg.fon.ps.view.form.component.table.TeamTableModel;
 
 /**
  *
@@ -37,8 +43,10 @@ public class FrmViewTeams extends javax.swing.JDialog {
         btnAdd = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         lblCu = new javax.swing.JLabel();
+        txtSearch = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("TrackData v1 - View All Teams");
 
         tblTeams.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -61,6 +69,12 @@ public class FrmViewTeams extends javax.swing.JDialog {
 
         lblCu.setForeground(new java.awt.Color(51, 51, 255));
 
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -77,7 +91,8 @@ public class FrmViewTeams extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblCu, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(lblCu, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -87,20 +102,34 @@ public class FrmViewTeams extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(lblCu, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnDetails)
                         .addGap(18, 18, 18)
-                        .addComponent(btnAdd)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(39, 39, 39))))
+                        .addComponent(btnAdd))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
+        TeamTableModel table = (TeamTableModel) tblTeams.getModel();
+        String search = txtSearch.getText().trim();
+
+        //      String pretrazi2 = txtPretrazi.getText().toUpperCase(); // za registraciju
+        TableRowSorter<TeamTableModel> tr = new TableRowSorter<>(table);
+        tblTeams.setRowSorter(tr);
+
+        tr.setRowFilter(RowFilter.regexFilter(search));
+        tr.setRowFilter(RowFilter.regexFilter("(?i)" + search));
+
+        //       tr.setRowFilter(RowFilter.regexFilter(pretrazi2));
+    }//GEN-LAST:event_txtSearchKeyReleased
 
     /**
      * @param args the command line arguments
@@ -113,6 +142,7 @@ public class FrmViewTeams extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblCu;
     private javax.swing.JTable tblTeams;
+    private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 
     public void getBtnDetailsAddActionListener(ActionListener actionListener) {
@@ -161,5 +191,12 @@ public class FrmViewTeams extends javax.swing.JDialog {
 
     public void getBtnAddAddActionListener(ActionListener actionListener) {
         btnAdd.addActionListener(actionListener);
+    }
+
+    public JTextField getTxtSearch() {
+        return txtSearch;
+    }
+    public void getTxtSearchAddFocus(FocusListener focusListener) {
+        txtSearch.addFocusListener(focusListener);
     }
 }

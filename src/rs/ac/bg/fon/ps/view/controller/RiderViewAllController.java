@@ -31,36 +31,38 @@ import rs.ac.bg.fon.ps.view.form.component.table.RiderTableModel;
  * @author laptop-02
  */
 public class RiderViewAllController {
-
+    
     private final FrmViewRiders frmViewRiders;
-
+    
     public RiderViewAllController(FrmViewRiders frmViewRiders) {
         this.frmViewRiders = frmViewRiders;
         addActionListener();
         addFocusListener();
     }
-private void addFocusListener(){
-    frmViewRiders.getTxtPretraziAddFocus(new FocusListener() {
-        @Override
-        public void focusGained(FocusEvent e) {
-            if (frmViewRiders.getTxtPretrazi().getText().equals("Pretrazi po bilo kom kriterijumu...")) {
-            frmViewRiders.getTxtPretrazi().setForeground(Color.black);
-            frmViewRiders.getTxtPretrazi().setText("");
-        }
-        }
-
-        @Override
-        public void focusLost(FocusEvent e) {
-             if (frmViewRiders.getTxtPretrazi().getText().isEmpty()) {
-            frmViewRiders.getTxtPretrazi().setText("Pretrazi po bilo kom kriterijumu...");
-            frmViewRiders.getTxtPretrazi().setForeground(Color.gray);
-
-        } else {
-            frmViewRiders.getTxtPretrazi().setForeground(Color.black);
-        }
-        }
-    });
-}
+    
+    private void addFocusListener() {
+        frmViewRiders.getTxtSearchAddFocus(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (frmViewRiders.getTxtSearch().getText().equals("Search...")) {
+                    frmViewRiders.getTxtSearch().setForeground(Color.black);
+                    frmViewRiders.getTxtSearch().setText("");
+                }
+            }
+            
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (frmViewRiders.getTxtSearch().getText().isEmpty()) {
+                    //frmViewRiders.getTxtSearch().setText("Search...");
+                    frmViewRiders.getTxtSearch().setForeground(Color.gray);
+                    
+                } else {
+                    frmViewRiders.getTxtSearch().setForeground(Color.black);
+                }
+            }
+        });
+    }
+    
     private void addActionListener() {
         frmViewRiders.getBtnDetailsAddActionListener(new ActionListener() {
             @Override
@@ -70,64 +72,45 @@ private void addFocusListener(){
                     Rider r = ((RiderTableModel) frmViewRiders.getTblRiders().getModel()).getRiderAt(row);
                     MainCordinator.getInstance().addParam(Constants.PARAM_RIDER, r);
                     MainCordinator.getInstance().openRiderDetailsRiderForm();
-
+                    
                 } else {
                     JOptionPane.showMessageDialog(frmViewRiders, "You must select a rider", "RIDER DETAILS", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
-
         frmViewRiders.addWindowListener(new WindowAdapter() {
             @Override
             public void windowActivated(WindowEvent e) {
                 fillTblRiders();
-                centrirajSveVrednostiUTabeli();
-                obradiPoljeKojePretrazuje();
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
+                centerTableValues();
+                searchFieldSettings();
             }
-
+            
         });
         frmViewRiders.getBtnAddAddActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-              MainCordinator.getInstance().openRiderAddRiderForm();
+                MainCordinator.getInstance().openRiderAddRiderForm();
             }
         });
     }
-
+    
     public void openForm() {
         frmViewRiders.setLocationRelativeTo(MainCordinator.getInstance().getMainContoller().getFrmMain());
         User currentUser = (User) MainCordinator.getInstance().getParam(Constants.CURRENT_USER);
         prepareView();
         frmViewRiders.getLblCU().setText(currentUser.getFirstname() + " " + currentUser.getLastname());
         frmViewRiders.setVisible(true);
+        
     }
-
+    
     private void prepareView() {
-        frmViewRiders.setTitle("View riders");
+        frmViewRiders.getTblRiders().getTableHeader().setResizingAllowed(false);
+        frmViewRiders.getTblRiders().getTableHeader().setReorderingAllowed(false);
+        frmViewRiders.setResizable(false);
         //fillTblRiders();
     }
-
+    
     private void fillTblRiders() {
         List<Rider> riders;
         try {
@@ -139,34 +122,36 @@ private void addFocusListener(){
             Logger.getLogger(RiderViewAllController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-private void centrirajSveVrednostiUTabeli() {
+    
+    private void centerTableValues() {
 
-        // centriraj nazive kolona
+        // center column names
         ((DefaultTableCellRenderer) frmViewRiders.getTblRiders().getTableHeader().getDefaultRenderer())
                 .setHorizontalAlignment(JLabel.CENTER);
 
-        // centriraj vrednosti u tabeli
+        // center column values
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-
+        
         for (int col = 0; col < frmViewRiders.getTblRiders().getColumnCount(); col++) {
             frmViewRiders.getTblRiders().getColumnModel().getColumn(col).setCellRenderer(centerRenderer);
         }
 
-        // omoguci sortiranje za sve kolone (default sortiranje u koje ne mesam svoje prste)
-        //tblVozila.setAutoCreateRowSorter(true);
+        // frmViewRiders.getTblRiders().setAutoCreateRowSorter(true);
     }
-private void obradiPoljeKojePretrazuje() {
-
-        if (!frmViewRiders.getTxtPretrazi().getText().equals("Pretrazi po bilo kom kriterijumu...")) {
-            frmViewRiders.getTxtPretrazi().setText("Pretrazi po bilo kom kriterijumu...");
-            frmViewRiders.getTxtPretrazi().setForeground(Color.gray);
-
+    
+    private void searchFieldSettings() {
+        
+        if (!frmViewRiders.getTxtSearch().getText().equals("Search...")) {
+            frmViewRiders.getTxtSearch().setText("Search...");
+            frmViewRiders.getTxtSearch().setForeground(Color.gray);
+            
         }
-
+        
     }
+    
     public void refresh() {
         fillTblRiders();
     }
-
+    
 }

@@ -68,11 +68,6 @@ public class RaceTableModel extends AbstractTableModel {
     }
 
     @Override
-    public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return columnIndex == 0 || columnIndex == 1 || columnIndex == 2 || columnIndex == 3 || columnIndex == 4 || columnIndex == 5;
-    }
-
-    @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         Race r = races.get(rowIndex);
         /*switch (columnIndex) {

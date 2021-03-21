@@ -44,7 +44,6 @@ public class FrmLogin extends javax.swing.JFrame {
         lblPasswordError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("User Login");
         setMaximumSize(new java.awt.Dimension(331, 173));
         setMinimumSize(new java.awt.Dimension(331, 173));
         setResizable(false);

@@ -52,6 +52,7 @@ public class FrmTeam extends javax.swing.JDialog {
         lblCU = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("TrackData v1 - New Team");
 
         jLabel1.setText("ID:");
 

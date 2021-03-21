@@ -64,6 +64,7 @@ public class FrmRace extends javax.swing.JDialog {
         btnEdit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("TrackData v1 - New Race");
 
         jLabel1.setText("ID:");
 

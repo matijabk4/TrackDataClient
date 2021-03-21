@@ -83,7 +83,7 @@ public class FrmRider extends javax.swing.JDialog {
         lblCU = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Rider Form");
+        setTitle("TrackData v1 - New Rider");
 
         lblID.setText("ID:");
 

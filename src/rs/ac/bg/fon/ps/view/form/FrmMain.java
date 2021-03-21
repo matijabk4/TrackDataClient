@@ -34,13 +34,11 @@ public class FrmMain extends javax.swing.JFrame {
      */
     public FrmMain() {
         initComponents();
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setSize(900, 500);
-        setMinimumSize(new Dimension(400, 400));
         setLocationRelativeTo(null);
         jMenuBarMain.add(Box.createHorizontalGlue());
         jMenuBarMain.add(jMenuLogout);
         jMenuItemLogout.setIcon(new ImageIcon("images/Logout.jpg"));
+        lblPicture.setIcon(new ImageIcon("images/main background.jpg"));
     }
 
     /**
@@ -52,8 +50,10 @@ public class FrmMain extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
         lblCurrentUser = new javax.swing.JLabel();
         lblCU = new javax.swing.JLabel();
+        lblPicture = new javax.swing.JLabel();
         jMenuBarMain = new javax.swing.JMenuBar();
         jMenuRider = new javax.swing.JMenu();
         jMenuItemNewRider = new javax.swing.JMenuItem();
@@ -68,13 +68,23 @@ public class FrmMain extends javax.swing.JFrame {
         jMenuItemLogout = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("TrackData 1.0");
+        setTitle("TrackData v1");
         setName(""); // NOI18N
 
-        lblCurrentUser.setText("Current user:");
+        jPanel1.setLayout(null);
 
-        lblCU.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        lblCU.setForeground(new java.awt.Color(51, 51, 255));
+        lblCurrentUser.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblCurrentUser.setForeground(new java.awt.Color(51, 51, 255));
+        lblCurrentUser.setText("Current user:");
+        jPanel1.add(lblCurrentUser);
+        lblCurrentUser.setBounds(10, 410, 120, 20);
+
+        lblCU.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblCU.setForeground(new java.awt.Color(255, 51, 51));
+        jPanel1.add(lblCU);
+        lblCU.setBounds(140, 400, 150, 40);
+        jPanel1.add(lblPicture);
+        lblPicture.setBounds(0, 0, 850, 460);
 
         jMenuRider.setText("Rider");
 
@@ -148,20 +158,11 @@ public class FrmMain extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(212, Short.MAX_VALUE)
-                .addComponent(lblCurrentUser)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblCU, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 553, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCurrentUser)
-                    .addComponent(lblCU))
-                .addGap(0, 265, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE)
         );
 
         pack();
@@ -219,8 +220,10 @@ public class FrmMain extends javax.swing.JFrame {
     private javax.swing.JMenu jMenuRace;
     private javax.swing.JMenu jMenuRider;
     private javax.swing.JMenu jMenuTeam;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblCU;
     private javax.swing.JLabel lblCurrentUser;
+    private javax.swing.JLabel lblPicture;
     // End of variables declaration//GEN-END:variables
 
     public void jmiRiderNewAddActionListener(ActionListener actionListener) {

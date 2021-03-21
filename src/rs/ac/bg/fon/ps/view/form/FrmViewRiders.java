@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -38,7 +39,6 @@ public class FrmViewRiders extends javax.swing.JDialog {
     public FrmViewRiders(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        //obradiPoljeKojePretrazuje();
     }
 
     /**
@@ -56,9 +56,10 @@ public class FrmViewRiders extends javax.swing.JDialog {
         btnAdd = new javax.swing.JButton();
         lblCurrentUser = new javax.swing.JLabel();
         lblCU = new javax.swing.JLabel();
-        txtPretrazi = new javax.swing.JTextField();
+        txtSearch = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("TrackData v1 - View All Riders");
 
         tblRiders.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -97,17 +98,17 @@ public class FrmViewRiders extends javax.swing.JDialog {
         lblCU.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblCU.setForeground(new java.awt.Color(51, 51, 255));
 
-        txtPretrazi.addFocusListener(new java.awt.event.FocusAdapter() {
+        txtSearch.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                txtPretraziFocusGained(evt);
+                txtSearchFocusGained(evt);
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
-                txtPretraziFocusLost(evt);
+                txtSearchFocusLost(evt);
             }
         });
-        txtPretrazi.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtPretraziKeyReleased(evt);
+                txtSearchKeyReleased(evt);
             }
         });
 
@@ -130,7 +131,7 @@ public class FrmViewRiders extends javax.swing.JDialog {
                                 .addComponent(lblCurrentUser, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(lblCU, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(txtPretrazi, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -148,9 +149,9 @@ public class FrmViewRiders extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addComponent(btnAdd))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtPretrazi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15))
         );
 
         pack();
@@ -187,38 +188,26 @@ public class FrmViewRiders extends javax.swing.JDialog {
         JOptionPane.showMessageDialog(this, "Please fill out all the fields. Cick 'Validate' once you are finished. ", "TrackData 1.0", JOptionPane.INFORMATION_MESSAGE);*/
     }//GEN-LAST:event_btnAddActionPerformed
 
-    private void txtPretraziKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPretraziKeyReleased
+    private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
         RiderTableModel table = (RiderTableModel) tblRiders.getModel();
-        String pretrazi = txtPretrazi.getText().trim();
+        String search = txtSearch.getText().trim();
 
         //      String pretrazi2 = txtPretrazi.getText().toUpperCase(); // za registraciju
         TableRowSorter<RiderTableModel> tr = new TableRowSorter<>(table);
         tblRiders.setRowSorter(tr);
 
-        tr.setRowFilter(RowFilter.regexFilter(pretrazi));
-        tr.setRowFilter(RowFilter.regexFilter("(?i)" + pretrazi));
+        tr.setRowFilter(RowFilter.regexFilter(search));
+        tr.setRowFilter(RowFilter.regexFilter("(?i)" + search));
 
         //       tr.setRowFilter(RowFilter.regexFilter(pretrazi2));
 
-    }//GEN-LAST:event_txtPretraziKeyReleased
+    }//GEN-LAST:event_txtSearchKeyReleased
 
-    private void txtPretraziFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPretraziFocusGained
-        /*if (txtPretrazi.getText().equals("Pretrazi po bilo kom kriterijumu...")) {
-            txtPretrazi.setForeground(Color.black);
-            txtPretrazi.setText("");
-        }*/
-    }//GEN-LAST:event_txtPretraziFocusGained
+    private void txtSearchFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSearchFocusGained
+    }//GEN-LAST:event_txtSearchFocusGained
 
-    private void txtPretraziFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPretraziFocusLost
-
-        /*if (txtPretrazi.getText().isEmpty()) {
-            txtPretrazi.setText("Pretrazi po bilo kom kriterijumu...");
-            txtPretrazi.setForeground(Color.gray);
-
-        } else {
-            txtPretrazi.setForeground(Color.black);
-        }*/
-    }//GEN-LAST:event_txtPretraziFocusLost
+    private void txtSearchFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSearchFocusLost
+    }//GEN-LAST:event_txtSearchFocusLost
 
     /**
      * @param args the command line arguments
@@ -231,52 +220,8 @@ public class FrmViewRiders extends javax.swing.JDialog {
     private javax.swing.JLabel lblCU;
     private javax.swing.JLabel lblCurrentUser;
     private javax.swing.JTable tblRiders;
-    private javax.swing.JTextField txtPretrazi;
+    private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
-
-    private void prepareView() throws Exception {
-        setLocationRelativeTo(null);
-        setTitle("View Riders");
-        //fillTblRiders();
-    }
-
-    
-
-    
-
-    private void validateForm() {
-        String fN, sN, nat;
-        MotorcycleMake motorcycle;
-
-        RiderTableModel rtm = (RiderTableModel) tblRiders.getModel();
-        int rows = rtm.getRowCount();
-        if (rows > 0) {
-
-            fN = String.valueOf(rtm.getValueAt(rows - 1, 1)).trim();
-            sN = String.valueOf(rtm.getValueAt(rows - 1, 2)).trim();
-            nat = String.valueOf(rtm.getValueAt(rows - 1, 3)).trim();
-            motorcycle = (MotorcycleMake) rtm.getValueAt(rows - 1, 4);
-
-            if ((fN.equalsIgnoreCase("null")
-                    || fN.isEmpty()
-                    || sN.equalsIgnoreCase("null")
-                    || sN.isEmpty()
-                    || nat.equalsIgnoreCase("null")
-                    || nat.isEmpty()
-                    || motorcycle == null
-                    || String.valueOf(rtm.getValueAt(rows - 1, 0)).equalsIgnoreCase("null")
-                    || String.valueOf(rtm.getValueAt(rows - 1, 5)).equalsIgnoreCase("null"))) {
-
-                JOptionPane.showMessageDialog(this, "Please fill out all the fields in order to keep adding more riders", "TrackData 1.0", JOptionPane.ERROR_MESSAGE);
-
-            } else {
-                JOptionPane.showMessageDialog(this, "Rider successfully saved!", "TrackData 1.0", JOptionPane.INFORMATION_MESSAGE);
-                btnAdd.setEnabled(true);
-                btnDetails.setEnabled(true);
-            }
-
-        }
-    }
 
     public void getBtnDetailsAddActionListener(ActionListener actionListener) {
         btnDetails.addActionListener(actionListener);
@@ -314,21 +259,11 @@ public class FrmViewRiders extends javax.swing.JDialog {
         btnAdd.addActionListener(actionListener);
     }
 
-    public void getTxtPretraziAddFocus(FocusListener focusListener) {
-        txtPretrazi.addFocusListener(focusListener);
+    public void getTxtSearchAddFocus(FocusListener focusListener) {
+        txtSearch.addFocusListener(focusListener);
     }
 
-    public JTextField getTxtPretrazi() {
-        return txtPretrazi;
-    }
-
-    private void obradiPoljeKojePretrazuje() {
-
-        /*if (!txtPretrazi.getText().equals("Pretrazi po bilo kom kriterijumu...")) {
-            txtPretrazi.setText("Pretrazi po bilo kom kriterijumu...");
-            txtPretrazi.setForeground(Color.gray);
-
-        }*/
-
+    public JTextField getTxtSearch() {
+        return txtSearch;
     }
 }

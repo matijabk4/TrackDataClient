@@ -49,6 +49,9 @@ public class MainController {
         User currentUser = (User) MainCordinator.getInstance().getParam(Constants.CURRENT_USER);
         frmMain.getLblCU().setText(currentUser.getFirstname() + " " + currentUser.getLastname());
         frmMain.setVisible(true);
+        frmMain.setLocationRelativeTo(null);
+        frmMain.setSize(800,500);
+        frmMain.setResizable(false);
     }
 
     private void addActionListener() {
