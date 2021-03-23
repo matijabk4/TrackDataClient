@@ -50,12 +50,12 @@ public class RiderController {
                     rider.setNationality(frmRider.getTxtNationality().getText().trim());
                     rider.setMotorcycle((MotorcycleMake) frmRider.getCbMotorcycleMake().getSelectedItem());
                     rider.setRacingNum(Integer.parseInt(frmRider.getTxtRacingNum().getText().trim()));
-                    if (JOptionPane.showConfirmDialog(frmRider, "Are you sure you want to save this rider?", "Add new rider", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    if (JOptionPane.showConfirmDialog(frmRider, "Are you sure you want to save this rider?", "TrackData v1 - Save Rider", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                         Communication.getInstance().addRider(rider);
                         System.out.println(rider.getID().toString());
 
                         frmRider.getTxtID().setText(rider.getID().toString());
-                        JOptionPane.showMessageDialog(frmRider, "Rider successfully saved!", "Add new rider", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(frmRider, "Rider successfully saved!", "TrackData v1 - Save Rider", JOptionPane.INFORMATION_MESSAGE);
                         frmRider.getTxtID().setText("");
                         frmRider.getTxtFName().setText("");
                         frmRider.getTxtSName().setText("");
@@ -98,9 +98,9 @@ public class RiderController {
             private void delete() {
                 Rider rider = makeRiderFromForm();
                 try {
-                    if (JOptionPane.showConfirmDialog(frmRider, "Are you sure you want to delete this rider?", "Delete rider", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    if (JOptionPane.showConfirmDialog(frmRider, "Are you sure you want to remove this rider?", "TrackData v1 - Remove Rider", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                         Communication.getInstance().deleteRider(rider);
-                        JOptionPane.showMessageDialog(frmRider, "Rider deleted successfully!\n", "Delete rider", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(frmRider, "Rider successfully removed!\n", "TrackData v1 - Remove Rider", JOptionPane.INFORMATION_MESSAGE);
                         frmRider.dispose();
                     }
                     /*Controller.getInstance().deleteRider(rider);
@@ -108,7 +108,7 @@ public class RiderController {
                      */
 
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(frmRider, "Error deleting rider!\n" + ex.getMessage(), "Delete rider", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frmRider, "Error deleting rider!\n" + ex.getMessage(), "TrackData v1 - Remove Rider", JOptionPane.ERROR_MESSAGE);
                     Logger.getLogger(RiderController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -125,15 +125,15 @@ public class RiderController {
                 try {
                     Rider rider = makeRiderFromForm();
                     validateFormEdit();
-                    if (JOptionPane.showConfirmDialog(frmRider, "Are you sure you want to update this rider?", "Update rider", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    if (JOptionPane.showConfirmDialog(frmRider, "Are you sure you want to update this rider?", "TrackData v1 - Update Rider", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 
                         Communication.getInstance().editRider(rider);
-                        JOptionPane.showMessageDialog(frmRider, "Rider information updated successfully!\n", "Edit rider", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(frmRider, "Rider information successfully updated!\n", "TrackData v1 - Update Rider", JOptionPane.INFORMATION_MESSAGE);
                         frmRider.dispose();
                     }
 
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(frmRider, "Error editting rider!\n" + ex.getMessage(), "Edit rider", JOptionPane.ERROR_MESSAGE);
+                    //JOptionPane.showMessageDialog(frmRider, "Error updating rider!\n" + ex.getMessage(), "TrackData v1 - Update Rider", JOptionPane.ERROR_MESSAGE);
                     Logger.getLogger(RiderController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }

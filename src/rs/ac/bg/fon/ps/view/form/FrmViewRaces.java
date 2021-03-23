@@ -7,12 +7,15 @@ package rs.ac.bg.fon.ps.view.form;
 
 import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
+import java.util.List;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.table.TableRowSorter;
+import rs.ac.bg.fon.ps.domain.RaceItem;
 import rs.ac.bg.fon.ps.view.form.component.table.RaceTableModel;
 import rs.ac.bg.fon.ps.view.form.component.table.TeamTableModel;
 
@@ -28,7 +31,7 @@ public class FrmViewRaces extends javax.swing.JDialog {
     public FrmViewRaces(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
+
     }
 
     /**
@@ -52,6 +55,10 @@ public class FrmViewRaces extends javax.swing.JDialog {
         btnDetails = new javax.swing.JButton();
         btnAdd = new javax.swing.JButton();
         txtSearch = new javax.swing.JTextField();
+        lblRaceName = new javax.swing.JLabel();
+        lblRaceStatus = new javax.swing.JLabel();
+        lblRName = new javax.swing.JLabel();
+        lblStat = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("TrackData v1 - View All Races");
@@ -124,6 +131,16 @@ public class FrmViewRaces extends javax.swing.JDialog {
             }
         });
 
+        lblRaceName.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lblRaceName.setText("Race:");
+
+        lblRaceStatus.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lblRaceStatus.setText("Status:");
+
+        lblRName.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+
+        lblStat.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -144,10 +161,18 @@ public class FrmViewRaces extends javax.swing.JDialog {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 660, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(btnSetRaceResult, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(btnDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(btnSetRaceResult, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(btnDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(17, 17, 17)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                    .addComponent(lblRName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(lblStat, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)))
+                                            .addComponent(lblRaceStatus)
+                                            .addComponent(lblRaceName)))
                                     .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
@@ -167,7 +192,15 @@ public class FrmViewRaces extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addComponent(btnAdd)
                         .addGap(18, 18, 18)
-                        .addComponent(btnSetRaceResult)))
+                        .addComponent(btnSetRaceResult)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblRaceName)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblRName)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblRaceStatus)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblStat)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 113, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -206,6 +239,10 @@ public class FrmViewRaces extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblCU;
+    private javax.swing.JLabel lblRName;
+    private javax.swing.JLabel lblRaceName;
+    private javax.swing.JLabel lblRaceStatus;
+    private javax.swing.JLabel lblStat;
     private javax.swing.JTable tblRaces;
     private javax.swing.JTable tblResults;
     private javax.swing.JTextField txtSearch;
@@ -262,7 +299,25 @@ public class FrmViewRaces extends javax.swing.JDialog {
     public JTextField getTxtSearch() {
         return txtSearch;
     }
-   public void getTxtSearchAddFocus(FocusListener focusListener) {
+
+    public void getTxtSearchAddFocus(FocusListener focusListener) {
         txtSearch.addFocusListener(focusListener);
     }
+
+    public JLabel getLblRaceName() {
+        return lblRaceName;
+    }
+
+    public JLabel getLblRaceStatus() {
+        return lblRaceStatus;
+    }
+
+    public JLabel getLblStat() {
+        return lblStat;
+    }
+
+    public JLabel getLblRName() {
+        return lblRName;
+    }
+
 }

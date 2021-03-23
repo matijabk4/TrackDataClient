@@ -71,12 +71,12 @@ public class LoginController {
     private void validateForm(String username, String password) throws Exception {
         String errorMessage = "";
         if (username.isEmpty()) {
-            frmLogin.getLblUsernameError().setText("Username can not be empty!");
-            errorMessage += "Username can not be empty!\n";
+            frmLogin.getLblUsernameError().setText("Username cannot be empty!");
+            errorMessage += "Username cannot be empty!\n";
         }
         if (password.isEmpty()) {
-            frmLogin.getLblPasswordError().setText("Password can not be empty!");
-            errorMessage += "Password can not be empty!\n";
+            frmLogin.getLblPasswordError().setText("Password cannot be empty!");
+            errorMessage += "Password cannot be empty!\n";
         }
         if (!errorMessage.isEmpty()) {
             throw new Exception(errorMessage);
@@ -96,13 +96,17 @@ public class LoginController {
             JOptionPane.showMessageDialog(
                     frmLogin,
                     "Welcome " + user.getFirstname() + ", " + user.getLastname(),
-                    "Login", JOptionPane.INFORMATION_MESSAGE
+                    "TrackData v1 - Login Success", JOptionPane.INFORMATION_MESSAGE
             );
             frmLogin.dispose();
             MainCordinator.getInstance().addParam(Constants.CURRENT_USER, user);
             MainCordinator.getInstance().openMainForm();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(frmLogin, e.getMessage(), "Login error", JOptionPane.ERROR_MESSAGE);
+            if(e.getMessage().equals("Unknown user!")){
+                JOptionPane.showMessageDialog(frmLogin, e.getMessage(), "TrackData v1 - Login Error", JOptionPane.ERROR_MESSAGE);
+        
+            }
+            //JOptionPane.showMessageDialog(frmLogin, e.getMessage(), "Login error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -119,7 +123,7 @@ public class LoginController {
             JOptionPane.showMessageDialog(
                     frmLogin,
                     "Welcome " + user.getFirstname() + ", " + user.getLastname(),
-                    "Login", JOptionPane.INFORMATION_MESSAGE
+                    "TrackData v1 - Login Success", JOptionPane.INFORMATION_MESSAGE
             );
             frmLogin.dispose();
             MainCordinator.getInstance().addParam(Constants.CURRENT_USER, user);

@@ -78,7 +78,18 @@ public class RaceViewAllController {
             public void windowActivated(WindowEvent e) {
                 fillTblRaces();
                 frmViewRaces.setLocationRelativeTo(null);
+                frmViewRaces.getLblRaceName().setVisible(true);
+                frmViewRaces.getLblRaceStatus().setVisible(true);
             }
+
+        });
+         frmViewRaces.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                frmViewRaces.getLblRaceName().setVisible(false);
+                frmViewRaces.getLblRaceStatus().setVisible(false);
+            }
+            
 
         });
         frmViewRaces.getBtnSetRaceResultAddActionListener(new ActionListener() {
@@ -92,6 +103,13 @@ public class RaceViewAllController {
                     frmViewRaces.setResizable(false);
                     frmViewRaces.setLocationRelativeTo(null);
                     frmViewRaces.getjPanel1().setVisible(true);
+                    frmViewRaces.getLblRaceName().setVisible(true);
+                    frmViewRaces.getLblRaceStatus().setVisible(true);
+                    frmViewRaces.getLblRName().setVisible(true);
+                    frmViewRaces.getLblStat().setVisible(true);
+                    frmViewRaces.getLblRName().setText(race.getName().toUpperCase());
+                    frmViewRaces.getLblStat().setText("P E N D I N G");
+                    frmViewRaces.getLblStat().setForeground(Color.yellow);
                     /*Rider r = ((RiderTableModel) frmViewRiders.getTblRiders().getModel()).getRiderAt(row);
                     MainCordinator.getInstance().addParam(Constants.PARAM_RIDER, r);
                     MainCordinator.getInstance().openRiderDetailsRiderForm();*/
@@ -106,11 +124,41 @@ public class RaceViewAllController {
         frmViewRaces.getBtnSaveRaceResultAddActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 ResultTableModel rtm = (ResultTableModel) frmViewRaces.getTblResults().getModel();
                 List<RaceItem> raceItemsForSave = rtm.getRaceItems();
-                saveRaceResult(raceItemsForSave);
-                frmViewRaces.setSize(860, 360);
-                frmViewRaces.getjPanel1().setVisible(false);
+                boolean errorSameFinishingPosition = false;
+                for (int i = 0; i < raceItemsForSave.size() - 1; i++) {
+                    RaceItem r1 = raceItemsForSave.get(i);
+                    for (int j = i + 1; j < raceItemsForSave.size(); j++) {
+                        RaceItem r2 = raceItemsForSave.get(j);
+                        if (r1.getFinishPosition() == r2.getFinishPosition()) {
+                            errorSameFinishingPosition = true;
+                            JOptionPane.showMessageDialog(frmViewRaces, "Two riders cannot have the same finishing position!", "TrackData v1 - Save Race Results", JOptionPane.ERROR_MESSAGE);
+                            break;
+                        }
+                    }
+                    break;
+                }
+                boolean errorFinishingPositionOutOfBounds = false;
+                int bound = raceItemsForSave.size();
+                for (RaceItem raceItem : raceItemsForSave) {
+                    if (raceItem.getFinishPosition() > bound || raceItem.getFinishPosition() <= 0) {
+                        errorFinishingPositionOutOfBounds = true;
+                        JOptionPane.showMessageDialog(frmViewRaces, "Finishing position must be in range [1-" + bound + "]!", "TrackData v1 - Save Race Results", JOptionPane.ERROR_MESSAGE);
+                        break;
+                    }
+                }
+                if (!errorSameFinishingPosition && !errorFinishingPositionOutOfBounds) {
+                    saveRaceResult(raceItemsForSave);
+                    frmViewRaces.setSize(860, 400);
+                    frmViewRaces.getjPanel1().setVisible(false);
+                    frmViewRaces.setLocationRelativeTo(null);
+                     /*frmViewRaces.getLblRaceName().setVisible(false);
+                    frmViewRaces.getLblRaceStatus().setVisible(false);
+                    frmViewRaces.getLblStat().setVisible(false);
+                    frmViewRaces.getLblRName().setVisible(false);*/
+                }
             }
         });
         frmViewRaces.getBtnDetailsAddActionListener(new ActionListener() {
@@ -142,6 +190,8 @@ public class RaceViewAllController {
                 fillTblRaces();
                 centerTableValues();
                 searchFieldSettings();
+                
+               
             }
 
         });
@@ -183,7 +233,14 @@ public class RaceViewAllController {
         try {
             Communication.getInstance().saveRaceResult(raceItemsForSave);
             Communication.getInstance().updateRaceInfo(raceItemsForSave.get(0).getRace().getId());
-            JOptionPane.showMessageDialog(frmViewRaces, "Uspeh");
+            int row = frmViewRaces.getTblRaces().getSelectedRow();
+            if (row >= 0) {
+                Race r = ((RaceTableModel) frmViewRaces.getTblRaces().getModel()).getRaceAt(row);
+                 frmViewRaces.getLblStat().setText("S A V E D!");
+               frmViewRaces.getLblStat().setForeground(Color.green);
+                JOptionPane.showMessageDialog(frmViewRaces, "Racing statistics for race " + r.getName().toUpperCase() + " successfully saved!", "TrackData v1 - Save Race Results", JOptionPane.INFORMATION_MESSAGE);
+              
+            }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(frmViewRaces, "GRESKAAA");
             Logger.getLogger(RaceViewAllController.class.getName()).log(Level.SEVERE, null, ex);

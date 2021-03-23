@@ -7,6 +7,7 @@ package rs.ac.bg.fon.ps.view.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -42,7 +43,7 @@ public class TeamController {
 
             private void save() {
                 try {
-                    //validateForm();
+                    validateForm();
                     RacingTeam team = new RacingTeam();
                     try {
                         team.setId(Integer.parseInt(frmTeam.getTxtID().getText().trim()));
@@ -67,7 +68,7 @@ public class TeamController {
                     frmTeam.getTxtSponsor().setText("");
                 } catch (Exception ex) {
                     Logger.getLogger(FrmRider.class.getName()).log(Level.SEVERE, null, ex);
-                    JOptionPane.showMessageDialog(frmTeam, ex.getMessage());
+                    //JOptionPane.showMessageDialog(frmTeam, ex.getMessage());
                 }
             }
         });
@@ -119,8 +120,11 @@ public class TeamController {
             }
 
             private void edit() {
-                RacingTeam team = makeTeamFromForm();
                 try {
+                RacingTeam team = makeTeamFromForm();
+                validateFormEdit();
+
+                
                     if (JOptionPane.showConfirmDialog(frmTeam, "Are you sure you want to update this team?", "Edit team", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 
                         Communication.getInstance().editTeam(team);
@@ -129,7 +133,7 @@ public class TeamController {
                     }
 
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(frmTeam, "Error editting team!\n" + ex.getMessage(), "Edit team", JOptionPane.ERROR_MESSAGE);
+                    //JOptionPane.showMessageDialog(frmTeam, "Error editting team!\n" + ex.getMessage(), "Edit team", JOptionPane.ERROR_MESSAGE);
                     Logger.getLogger(RiderController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -217,60 +221,112 @@ public class TeamController {
     private RacingTeam makeTeamFromForm() {
         RacingTeam r = new RacingTeam();
         r.setId(Integer.parseInt(frmTeam.getTxtID().getText().trim()));
-        r.setBudget(Double.parseDouble(frmTeam.getTxtBudget().getText().trim()));
         r.setGeneralManager(frmTeam.getTxtManager().getText().trim());
         r.setHeadquarters(frmTeam.getTxtHQ().getText().trim());
         r.setName(frmTeam.getTxtName().getText().trim());
         r.setSponsor(frmTeam.getTxtSponsor().getText().trim());
+        try {
+            r.setBudget(Double.parseDouble(frmTeam.getTxtBudget().getText().trim()));
+
+        } catch (Exception e) {
+        }
         return r;
     }
 
-    /*private void validateForm() throws Exception {
+    private void validateForm() throws Exception {
         frmTeam.getLblIDError().setText("");
-        frmTeam.getLblFirstnameError().setText("");
-        frmTeam.getLblSurnameError().setText("");
-        frmTeam.getLblNationalityError().setText("");
-        frmTeam.getLblRacingNumberError().setText("");
+        frmTeam.getLblHeadquartersError().setText("");
+        frmTeam.getLblSponsorError().setText("");
+        frmTeam.getLblManagerError().setText("");
+        frmTeam.getLblNameError().setText("");
+        frmTeam.getLblBudgetError().setText("");
         String msg = "";
-        if (frmTeam.getTxtID().getText().isEmpty()) {
-            frmTeam.getLblIDError().setText("Please insert ID");
-            msg += "ID cannot be empty!\n";
 
-        } else {
-            try {
-                Long.parseLong(frmTeam.getTxtID().getText().trim());
-            } catch (Exception e) {
-                frmTeam.getLblIDError().setText("Please insert long value");
-                msg += "ID must be a long value!\n";
-            }
-        }
-        if (frmTeam.getTxtFName().getText().isEmpty()) {
-            frmTeam.getLblFirstnameError().setText("Please insert firstname");
-            msg += "Firstname cannot be empty!\n";
+        if (frmTeam.getTxtHQ().getText().isEmpty()) {
+            frmTeam.getLblHeadquartersError().setText("Please insert headquarters");
+            msg += "Headquarters cannot be empty!\n";
 
         }
-        if (frmTeam.getTxtSName().getText().isEmpty()) {
-            frmTeam.getLblSurnameError().setText("Please insert surname");
-            msg += "Surname cannot be empty!\n";
+        if (frmTeam.getTxtSponsor().getText().isEmpty()) {
+            frmTeam.getLblSponsorError().setText("Please insert sponsor");
+            msg += "Sponsor cannot be empty!\n";
         }
-        if (frmTeam.getTxtNationality().getText().isEmpty()) {
-            frmTeam.getLblNationalityError().setText("Please insert nationality");
-            msg += "Nationality cannot be empty!\n";
+        if (frmTeam.getTxtManager().getText().isEmpty()) {
+            frmTeam.getLblManagerError().setText("Please insert manager");
+            msg += "Manager cannot be empty!\n";
         }
-        if (frmTeam.getTxtRacingNum().getText().isEmpty()) {
-            frmTeam.getLblRacingNumberError().setText("Please insert racing number");
-            msg += "Racing number cannot be empty!\n";
+        if (frmTeam.getTxtName().getText().isEmpty()) {
+            frmTeam.getLblNameError().setText("Please insert team name");
+            msg += "Team name cannot be empty!\n";
+        }
+        if (frmTeam.getTxtBudget().getText().isEmpty()) {
+            frmTeam.getLblBudgetError().setText("Please insert budget");
+            msg += "Budget cannot be empty!\n";
         } else {
             try {
-                Integer.parseInt(frmTeam.getTxtRacingNum().getText().trim());
+                Double.parseDouble(frmTeam.getTxtBudget().getText().trim());
             } catch (Exception e) {
-                frmTeam.getLblRacingNumberError().setText("Please insert integer value");
-                msg += "Racing number must be an integer value!\n";
+                frmTeam.getLblBudgetError().setText("Please insert numeric value");
+                msg += "Racing number must be numeric value!\n";
             }
 
         }
         if (!msg.isEmpty()) {
             throw new Exception(msg);
         }
-    }*/
+    }
+    private void validateFormEdit() throws Exception {
+       frmTeam.getLblIDError().setText("");
+        frmTeam.getLblHeadquartersError().setText("");
+        frmTeam.getLblSponsorError().setText("");
+        frmTeam.getLblManagerError().setText("");
+        frmTeam.getLblNameError().setText("");
+        frmTeam.getLblBudgetError().setText("");
+        String msg = "";
+
+        if (frmTeam.getTxtHQ().getText().isEmpty()) {
+            frmTeam.getLblHeadquartersError().setText("Please insert headquarters");
+            msg += "Headquarters cannot be empty!\n";
+
+        }
+        if (frmTeam.getTxtSponsor().getText().isEmpty()) {
+            frmTeam.getLblSponsorError().setText("Please insert sponsor");
+            msg += "Sponsor cannot be empty!\n";
+        }
+        if (frmTeam.getTxtManager().getText().isEmpty()) {
+            frmTeam.getLblManagerError().setText("Please insert manager");
+            msg += "Manager cannot be empty!\n";
+        }
+        if (frmTeam.getTxtName().getText().isEmpty()) {
+            frmTeam.getLblNameError().setText("Please insert team name");
+            msg += "Team name cannot be empty!\n";
+        }
+        if (frmTeam.getTxtBudget().getText().isEmpty() || frmTeam.getTxtBudget().getText()=="") {
+            frmTeam.getLblBudgetError().setText("Please insert budget");
+            msg += "Budget cannot be empty!\n";
+        } else {
+            try {
+                Double.parseDouble(frmTeam.getTxtBudget().getText().trim());
+            } catch (Exception e) {
+                frmTeam.getLblBudgetError().setText("Please insert numeric value");
+                msg += "Racing number must be numeric value!\n";
+            }
+
+        }
+        List<RacingTeam> teams = Communication.getInstance().getAllTeams();
+        for (RacingTeam team : teams) {
+            if(team.getName().toUpperCase().equals(frmTeam.getTxtName().getText().toUpperCase()) && team.getId()!= Integer.parseInt(frmTeam.getTxtID().getText().trim())){
+                frmTeam.getLblNameError().setText("Team "+frmTeam.getTxtName().getText()+" already exists!");
+                msg+="Team already exists!\n";
+            }
+        }
+        boolean HQAllLetters = frmTeam.getTxtHQ().getText().chars().allMatch(Character::isLetter);
+        if (!HQAllLetters) {
+            frmTeam.getLblHeadquartersError().setText("Please insert a valid headquarter.");
+            msg += "Headquarter contains letters only!\n";
+        }
+        if (!msg.isEmpty()) {
+            throw new Exception(msg);
+        }
+}
 }
