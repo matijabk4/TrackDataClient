@@ -28,6 +28,7 @@ import rs.ac.bg.fon.ps.view.cordinator.MainCordinator;
 import rs.ac.bg.fon.ps.view.constant.Constants;
 import rs.ac.bg.fon.ps.view.form.FrmMain;
 import rs.ac.bg.fon.ps.view.form.FrmRace;
+import rs.ac.bg.fon.ps.view.form.FrmRider;
 import rs.ac.bg.fon.ps.view.form.component.table.RaceItemTableModel;
 import rs.ac.bg.fon.ps.view.form.util.FormMode;
 
@@ -161,6 +162,7 @@ public class RaceController {
         fillTblRace();
         addActionListeners();
         setupComponents(formMode);
+        frmRace.setResizable(false);
     }/*
 
     private void fillCbMeasurementUnit() {
@@ -454,6 +456,7 @@ public class RaceController {
 
             private void saveRace() {
                 try {
+                    validateForm();
                     DateFormat df = new SimpleDateFormat("dd.MM.yyyy.");
                     RaceItemTableModel rtm = (RaceItemTableModel) frmRace.getTblRaceItem().getModel();
                     Race race = new Race();
@@ -471,11 +474,11 @@ public class RaceController {
                     Communication.getInstance().addRace(race);
                     frmRace.getTxtID().setText(String.valueOf(race.getId()));
                     JOptionPane.showMessageDialog(frmRace, "Race successfully saved!");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    JOptionPane.showMessageDialog(frmRace, "Race not saved! " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (Exception ex) {
+                    Logger.getLogger(FrmRace.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+
         });
         frmRace.addEnableChangesBtnActionListener(new ActionListener() {
             @Override
@@ -509,6 +512,55 @@ public class RaceController {
             }
 
         });
+    }
+
+    private void validateForm() throws Exception {
+        frmRace.getLblDateError().setText("");
+        frmRace.getLblRaceNameError().setText("");
+        frmRace.getLblTotalLapsError().setText("");
+        frmRace.getLblTrackError().setText("");
+        String msg = "";
+        if (frmRace.getTxtTrack().getText().isEmpty()) {
+            frmRace.getLblTrackError().setText("Please insert track name");
+            msg += "Firstname cannot be empty!\n";
+
+        }
+        if (frmRace.getTxtTotalLaps().getText().isEmpty()) {
+            frmRace.getLblTotalLapsError().setText("Please insert number of laps");
+            msg += "Surname cannot be empty!\n";
+        }
+        if (frmRace.getTxtRace().getText().isEmpty()) {
+            frmRace.getLblRaceNameError().setText("Please insert race name");
+            msg += "Nationality cannot be empty!\n";
+        }
+        if (frmRace.getTxtDate().getText().isEmpty()) {
+            frmRace.getLblDateError().setText("Please insert race date");
+            msg += "Racing number cannot be empty!\n";
+        }
+        try {
+            if (Integer.parseInt(frmRace.getTxtTotalLaps().getText().trim()) < 20 || Integer.parseInt(frmRace.getTxtTotalLaps().getText().trim()) > 23) {
+                frmRace.getLblTotalLapsError().setText("Number of laps must be in range [20-23]");
+                msg += "Race cannot have over 23 laps!\n";
+            }
+        } catch (Exception e) {
+        }
+        if(!frmRace.getTxtDate().getText().isEmpty()){
+        DateFormat df = new SimpleDateFormat("dd.MM.yyyy.");
+        try {
+            df.parse(frmRace.getTxtDate().getText().trim());
+        } catch (Exception e) {
+            frmRace.getLblDateError().setText("Bad date format");
+            msg += "Date must be in format dd.MM.yyyy.";
+        }
+        }
+         boolean TrackAllLetters = frmRace.getTxtTrack().getText().chars().anyMatch(Character::isDigit);
+        if (TrackAllLetters) {
+            frmRace.getLblTrackError().setText("Please insert a valid track name");
+            msg += "Track name contains letters only!\n";
+        }
+        if (!msg.isEmpty()) {
+            throw new Exception(msg);
+        }
     }
 
     private Race makeRaceFromForm() {

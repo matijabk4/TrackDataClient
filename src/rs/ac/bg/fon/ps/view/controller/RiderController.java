@@ -248,26 +248,26 @@ public class RiderController {
         String msg = "";
 
         if (frmRider.getTxtFName().getText().isEmpty()) {
-            frmRider.getLblFirstnameError().setText("Please insert firstname.");
+            frmRider.getLblFirstnameError().setText("Please insert firstname");
             msg += "Firstname cannot be empty!\n";
 
         }
         if (frmRider.getTxtSName().getText().isEmpty()) {
-            frmRider.getLblSurnameError().setText("Please insert surname.");
+            frmRider.getLblSurnameError().setText("Please insert surname");
             msg += "Surname cannot be empty!\n";
         }
         if (frmRider.getTxtNationality().getText().isEmpty()) {
-            frmRider.getLblNationalityError().setText("Please insert nationality.");
+            frmRider.getLblNationalityError().setText("Please insert nationality");
             msg += "Nationality cannot be empty!\n";
         }
         if (frmRider.getTxtRacingNum().getText().isEmpty()) {
-            frmRider.getLblRacingNumberError().setText("Please insert racing number.");
+            frmRider.getLblRacingNumberError().setText("Please insert racing number");
             msg += "Racing number cannot be empty!\n";
         } else {
             try {
                 Integer.parseInt(frmRider.getTxtRacingNum().getText().trim());
             } catch (Exception e) {
-                frmRider.getLblRacingNumberError().setText("Please insert integer value.");
+                frmRider.getLblRacingNumberError().setText("Please insert integer value");
                 msg += "Racing number must be an integer value!\n";
             }
 
@@ -279,13 +279,13 @@ public class RiderController {
         for (Rider r : riders) {
             if (r.getFirstname().toUpperCase().equals(frmRider.getTxtFName().getText().toUpperCase()) && r.getSurname().toUpperCase().equals(frmRider.getTxtSName().getText().toUpperCase())) {
                 exists = true;
-                frmRider.getLblFirstnameError().setText("Please insert a new firstname.");
-                frmRider.getLblSurnameError().setText("Please insert a new surname.");
+                frmRider.getLblFirstnameError().setText("Rider already exists");
+                frmRider.getLblSurnameError().setText("Rider already exists");
             }
             try {
-                if (r.getRacingNum() == Integer.valueOf(frmRider.getTxtRacingNum().getText())) {
+                if (r.getRacingNum().equals(Integer.valueOf(frmRider.getTxtRacingNum().getText()))) {
                     racingNumber = true;
-                    frmRider.getLblRacingNumberError().setText("Please insert other racing number.");
+                            
                 }
             } catch (Exception e) {
 
@@ -293,6 +293,7 @@ public class RiderController {
 
         }
         if (racingNumber) {
+            frmRider.getLblRacingNumberError().setText("Racing number already taken");
             msg += "Rider with racing number " + frmRider.getTxtRacingNum().getText() + " already exists!\n";
         }
         if (exists) {
@@ -301,24 +302,24 @@ public class RiderController {
         boolean firstnameAllLetters = frmRider.getTxtFName().getText().chars().allMatch(Character::isLetter);
         boolean surnameAllLetters = frmRider.getTxtSName().getText().chars().allMatch(Character::isLetter);
         if (!firstnameAllLetters) {
-            frmRider.getLblFirstnameError().setText("Please insert a new firstname.");
+            frmRider.getLblFirstnameError().setText("Please insert a new firstname");
             msg += "Firstname contains letters only!\n";
         }
         if (frmRider.getTxtFName().getText().trim().length() < 2) {
-            frmRider.getLblFirstnameError().setText("Please insert a new firstname.");
+            frmRider.getLblFirstnameError().setText("Please insert a new firstname");
             msg += "Firstname is too short!\n";
         }
         if (!surnameAllLetters) {
-            frmRider.getLblSurnameError().setText("Please insert a new surname.");
+            frmRider.getLblSurnameError().setText("Please insert a new surname");
             msg += "Surname contains letters only!\n";
         }
         if (frmRider.getTxtSName().getText().trim().length() < 2) {
-            frmRider.getLblSurnameError().setText("Please insert a new surname.");
+            frmRider.getLblSurnameError().setText("Please insert a new surname");
             msg += "Surname is too short!\n";
         }
         try {
             if (Integer.parseInt(frmRider.getTxtRacingNum().getText().trim()) < 0 || Integer.parseInt(frmRider.getTxtRacingNum().getText().trim()) > 99) {
-                frmRider.getLblRacingNumberError().setText("Please insert other racing number.");
+                frmRider.getLblRacingNumberError().setText("Please insert other racing number");
                 msg += "Racing number must be in range [0-99]!\n";
             }
         } catch (Exception e) {
@@ -326,11 +327,11 @@ public class RiderController {
 
         boolean nationalityAllLetters = frmRider.getTxtNationality().getText().chars().allMatch(Character::isLetter);
         if (!nationalityAllLetters) {
-            frmRider.getLblNationalityError().setText("Please insert a valid nationality.");
+            frmRider.getLblNationalityError().setText("Please insert a valid nationality");
             msg += "Nationality contains letters only!\n";
         }
         if (frmRider.getTxtNationality().getText().trim().length() < 4) {
-            frmRider.getLblNationalityError().setText("Please insert a valid nationality.");
+            frmRider.getLblNationalityError().setText("Please insert a valid nationality");
             msg += "Please insert a valid nationality!\n";
         }
         if (!msg.isEmpty()) {
