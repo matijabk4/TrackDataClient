@@ -122,14 +122,14 @@ public class LoginController {
             User user = Communication.getInstance().login(username, password);
             JOptionPane.showMessageDialog(
                     frmLogin,
-                    "Welcome " + user.getFirstname() + ", " + user.getLastname(),
+                    "Welcome " + user.getFirstname() + " " + user.getLastname(),
                     "TrackData v1 - Login Success", JOptionPane.INFORMATION_MESSAGE
             );
             frmLogin.dispose();
             MainCordinator.getInstance().addParam(Constants.CURRENT_USER, user);
             MainCordinator.getInstance().openMainForm();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(frmLogin, e.getMessage(), "Login error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frmLogin, e.getMessage(), "TrackData v1 - Login Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }
