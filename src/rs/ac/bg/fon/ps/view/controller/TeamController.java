@@ -68,7 +68,7 @@ public class TeamController {
                         frmTeam.getTxtSponsor().setText("");
                     }
                 } catch (Exception ex) {
-                    Logger.getLogger(FrmRider.class.getName()).log(Level.SEVERE, null, ex);
+                    //Logger.getLogger(FrmRider.class.getName()).log(Level.SEVERE, null, ex);
                     //JOptionPane.showMessageDialog(frmTeam, ex.getMessage());
                 }
             }
@@ -88,7 +88,9 @@ public class TeamController {
             }
 
             private void cancel() {
-                frmTeam.dispose();
+                 if (JOptionPane.showConfirmDialog(frmTeam, "Are you sure? Any unsaved data will be lost.", "TrackData v1 - Save Team", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    frmTeam.dispose();
+                }
             }
         });
 
@@ -101,15 +103,15 @@ public class TeamController {
             private void delete() {
                 RacingTeam team = makeTeamFromForm();
                 try {
-                    if (JOptionPane.showConfirmDialog(frmTeam, "Are you sure you want to delete this team?", "Delete team", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    if (JOptionPane.showConfirmDialog(frmTeam, "Are you sure you want to delete this team?", "TrackData v1 - Delete team", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                         Communication.getInstance().deleteTeam(team);
-                        JOptionPane.showMessageDialog(frmTeam, "Team deleted successfully!\n", "Delete team", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(frmTeam, "Team deleted successfully!\n", "TrackData v1 - Delete team", JOptionPane.INFORMATION_MESSAGE);
                         frmTeam.dispose();
                     }
 
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(frmTeam, "Error deleting team!\n" + ex.getMessage(), "Delete team", JOptionPane.ERROR_MESSAGE);
-                    Logger.getLogger(RiderController.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(frmTeam, "Error deleting team!\n" + ex.getMessage(), "TrackData v1 - Delete team", JOptionPane.ERROR_MESSAGE);
+                    //Logger.getLogger(RiderController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -125,16 +127,16 @@ public class TeamController {
                     RacingTeam team = makeTeamFromForm();
                     validateFormEdit();
 
-                    if (JOptionPane.showConfirmDialog(frmTeam, "Are you sure you want to update this team?", "Edit team", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    if (JOptionPane.showConfirmDialog(frmTeam, "Are you sure you want to update this team?", "TrackData v1 - Edit team", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 
                         Communication.getInstance().editTeam(team);
-                        JOptionPane.showMessageDialog(frmTeam, "Team information updated successfully!\n", "Edit team", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(frmTeam, "Team information updated successfully!\n", "TrackData v1 - Edit team", JOptionPane.INFORMATION_MESSAGE);
                         frmTeam.dispose();
                     }
 
                 } catch (Exception ex) {
                     //JOptionPane.showMessageDialog(frmTeam, "Error editting team!\n" + ex.getMessage(), "Edit team", JOptionPane.ERROR_MESSAGE);
-                    Logger.getLogger(RiderController.class.getName()).log(Level.SEVERE, null, ex);
+                    //Logger.getLogger(RiderController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });

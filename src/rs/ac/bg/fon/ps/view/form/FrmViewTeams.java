@@ -65,8 +65,11 @@ public class FrmViewTeams extends javax.swing.JDialog {
 
         btnAdd.setText("Add");
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 0, 0));
         jLabel1.setText("Current user:");
 
+        lblCu.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblCu.setForeground(new java.awt.Color(51, 51, 255));
 
         txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -91,7 +94,7 @@ public class FrmViewTeams extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblCu, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(lblCu, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );

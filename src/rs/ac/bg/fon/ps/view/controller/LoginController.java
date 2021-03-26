@@ -95,7 +95,7 @@ public class LoginController {
             User user = Communication.getInstance().login(username, password);
             JOptionPane.showMessageDialog(
                     frmLogin,
-                    "Welcome " + user.getFirstname() + ", " + user.getLastname(),
+                    "Welcome " + user.getFirstname() + " " + user.getLastname(),
                     "TrackData v1 - Login Success", JOptionPane.INFORMATION_MESSAGE
             );
             frmLogin.dispose();

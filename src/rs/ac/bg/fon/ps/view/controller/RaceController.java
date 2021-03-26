@@ -12,6 +12,7 @@ import java.awt.event.ItemListener;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -42,111 +43,9 @@ public class RaceController {
 
     public RaceController(FrmRace frmRace) {
         this.frmRace = frmRace;
-        //addActionListeners();
+        addActionListeners();
     }
 
-    /*private void addActionListeners() {
-        frmRace.addSaveBtnActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                save();
-            }
-
-            private void save() {
-                try {
-                    validateForm();
-                    Rider rider = new Rider();
-                    rider.setID(Long.parseLong(frmRace.getTxtID().getText().trim()));
-                    rider.setFirstname(frmRace.getTxtFName().getText().trim());
-                    rider.setSurname(frmRace.getTxtSName().getText().trim());
-                    rider.setNationality(frmRace.getTxtNationality().getText().trim());
-                    rider.setMotorcycle((MotorcycleMake) frmRace.getCbMotorcycleMake().getSelectedItem());
-                    rider.setRacingNum(Integer.parseInt(frmRace.getTxtRacingNum().getText().trim()));
-
-                    Controller.getInstance().addRider(rider);
-
-                    JOptionPane.showMessageDialog(frmRace, "Rider successfully saved!", "Add rider", JOptionPane.INFORMATION_MESSAGE);
-                    frmRace.getTxtID().setText("");
-                    frmRace.getTxtFName().setText("");
-                    frmRace.getTxtSName().setText("");
-                    frmRace.getTxtNationality().setText("");
-                    frmRace.getCbMotorcycleMake().setSelectedItem(MotorcycleMake.Honda);
-                    frmRace.getTxtRacingNum().setText("");
-                } catch (Exception ex) {
-                    Logger.getLogger(FrmRider.class.getName()).log(Level.SEVERE, null, ex);
-                    JOptionPane.showMessageDialog(frmRace, ex.getMessage());
-                }
-            }
-        });
-
-        frmRace.addEnableChangesBtnActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setupComponents(FormMode.FORM_EDIT);
-            }
-        });
-
-        frmRace.addCancelBtnActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cancel();
-            }
-
-            private void cancel() {
-                frmRace.dispose();
-            }
-        });
-
-        frmRace.addDeleteBtnActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                delete();
-            }
-
-            private void delete() {
-                Rider rider = makeRiderFromForm();
-                try {
-                    if (JOptionPane.showConfirmDialog(frmRace, "Are you sure you want to delete this rider?", "Delete rider", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                        Controller.getInstance().deleteRider(rider);
-                        JOptionPane.showMessageDialog(frmRace, "Rider deleted successfully!\n", "Delete rider", JOptionPane.INFORMATION_MESSAGE);
-                        frmRace.dispose();
-                    }
-                    Controller.getInstance().deleteRider(rider);
-                    JOptionPane.showMessageDialog(frmRace, "Rider deleted successfully!\n", "Delete rider", JOptionPane.INFORMATION_MESSAGE);
-                     
-
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(frmRace, "Error deleting rider!\n" + ex.getMessage(), "Delete rider", JOptionPane.ERROR_MESSAGE);
-                    Logger.getLogger(RiderController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-
-        frmRace.addEditBtnActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                edit();
-            }
-
-            private void edit() {
-                Rider rider = makeRiderFromForm();
-                try {
-                    if (JOptionPane.showConfirmDialog(frmRace, "Are you sure you want to update this rider?", "Update rider", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-
-                        Controller.getInstance().editRider(rider);
-                        JOptionPane.showMessageDialog(frmRace, "Rider information updated successfully!\n", "Edit rider", JOptionPane.INFORMATION_MESSAGE);
-                        frmRace.dispose();
-                    }
-
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(frmRace, "Error editting rider!\n" + ex.getMessage(), "Edit rider", JOptionPane.ERROR_MESSAGE);
-                    Logger.getLogger(RiderController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-    }*/
-
- /**/
     public void openForm(FormMode formMode) {
         frmRace.setLocationRelativeTo(MainCordinator.getInstance().getMainContoller().getFrmMain());
         User currentUser = (User) MainCordinator.getInstance().getParam(Constants.CURRENT_USER);
@@ -160,19 +59,10 @@ public class RaceController {
         fillForm();
         fillDefaultValues();
         fillTblRace();
-        addActionListeners();
         setupComponents(formMode);
         frmRace.setResizable(false);
-    }/*
-
-    private void fillCbMeasurementUnit() {
-        frmRace.getCbMotorcycleMake().removeAllItems();
-        for (MotorcycleMake m : MotorcycleMake.values()) {
-            frmRace.getCbMotorcycleMake().addItem(m);
-        }
     }
 
-     */
     private void setupComponents(FormMode formMode) {
         switch (formMode) {
             case FORM_ADD:
@@ -189,6 +79,7 @@ public class RaceController {
                 frmRace.getTxtTotalLaps().setEnabled(true);
                 break;
             case FORM_VIEW:
+
                 frmRace.getBtnCancel().setEnabled(true);
                 frmRace.getBtnDelete().setEnabled(true);
                 frmRace.getBtnEdit().setEnabled(false);
@@ -207,7 +98,7 @@ public class RaceController {
                 frmRace.getTxtRace().setEnabled(false);
                 frmRace.getTxtTotalLaps().setEnabled(false);
                 frmRace.getjPanel1().setVisible(false);
-
+                frmRace.setSize(675, 610);
                 //get race
                 Race r = (Race) MainCordinator.getInstance().getParam(Constants.PARAM_RACE);
                 frmRace.getTxtID().setText(r.getId() + "");
@@ -221,7 +112,7 @@ public class RaceController {
                         String date = sdf.format(d);
                         frmRace.getTxtDate().setText(date);
                     } catch (ParseException ex) {
-                        Logger.getLogger(RaceController.class.getName()).log(Level.SEVERE, null, ex);
+                        //Logger.getLogger(RaceController.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
 
@@ -229,6 +120,7 @@ public class RaceController {
                 frmRace.getTxtTotalLaps().setText(String.valueOf(r.getTotalLaps()));
                 RaceItemTableModel ritm = new RaceItemTableModel(r);
                 frmRace.getTblRaceItem().setModel(ritm);
+                frmRace.setLocationRelativeTo(null);
                 break;
             case FORM_EDIT:
                 frmRace.getBtnCancel().setEnabled(true);
@@ -249,69 +141,12 @@ public class RaceController {
                 frmRace.getTxtDate().setEnabled(true);
                 frmRace.getTxtRace().setEnabled(true);
                 frmRace.getTxtTotalLaps().setEnabled(true);
+                frmRace.setSize(675, 900);
+                frmRace.setLocationRelativeTo(null);
                 break;
         }
     }
 
-    /*private Rider makeRiderFromForm() {
-        Rider r = new Rider();
-        r.setID(Long.parseLong(frmRace.getTxtID().getText().trim()));
-        r.setFirstname(frmRace.getTxtFName().getText().trim());
-        r.setSurname(frmRace.getTxtSName().getText().trim());
-        r.setNationality(frmRace.getTxtNationality().getText().trim());
-        r.setMotorcycle((MotorcycleMake) frmRace.getCbMotorcycleMake().getSelectedItem());
-        r.setRacingNum(Integer.parseInt(frmRace.getTxtRacingNum().getText().trim()));
-        return r;
-    }
-
-    private void validateForm() throws Exception {
-        frmRace.getLblIDError().setText("");
-        frmRace.getLblFirstnameError().setText("");
-        frmRace.getLblSurnameError().setText("");
-        frmRace.getLblNationalityError().setText("");
-        frmRace.getLblRacingNumberError().setText("");
-        String msg = "";
-        if (frmRace.getTxtID().getText().isEmpty()) {
-            frmRace.getLblIDError().setText("Please insert ID");
-            msg += "ID cannot be empty!\n";
-
-        } else {
-            try {
-                Long.parseLong(frmRace.getTxtID().getText().trim());
-            } catch (Exception e) {
-                frmRace.getLblIDError().setText("Please insert long value");
-                msg += "ID must be a long value!\n";
-            }
-        }
-        if (frmRace.getTxtFName().getText().isEmpty()) {
-            frmRace.getLblFirstnameError().setText("Please insert firstname");
-            msg += "Firstname cannot be empty!\n";
-
-        }
-        if (frmRace.getTxtSName().getText().isEmpty()) {
-            frmRace.getLblSurnameError().setText("Please insert surname");
-            msg += "Surname cannot be empty!\n";
-        }
-        if (frmRace.getTxtNationality().getText().isEmpty()) {
-            frmRace.getLblNationalityError().setText("Please insert nationality");
-            msg += "Nationality cannot be empty!\n";
-        }
-        if (frmRace.getTxtRacingNum().getText().isEmpty()) {
-            frmRace.getLblRacingNumberError().setText("Please insert racing number");
-            msg += "Racing number cannot be empty!\n";
-        } else {
-            try {
-                Integer.parseInt(frmRace.getTxtRacingNum().getText().trim());
-            } catch (Exception e) {
-                frmRace.getLblRacingNumberError().setText("Please insert integer value");
-                msg += "Racing number must be an integer value!\n";
-            }
-
-        }
-        if (!msg.isEmpty()) {
-            throw new Exception(msg);
-        }
-    }*/
     private void fillForm() {
         try {
             frmRace.getCbTeam().setModel(new DefaultComboBoxModel(Communication.getInstance().getAllTeams().toArray()));
@@ -331,7 +166,7 @@ public class RaceController {
                 }
             });
         } catch (Exception ex) {
-            Logger.getLogger(RaceController.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(RaceController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -352,38 +187,20 @@ public class RaceController {
             }
 
             private void addRaceItem() {
-                int row = 0;
+
                 try {
-                    row++;
                     Rider rider = (Rider) frmRace.getCbRider().getSelectedItem();
-                    System.out.println("OK1");
-                    row++;
                     int startingPos = Integer.parseInt(frmRace.getTxtStartingPosition().getText().trim());
-                    System.out.println("OK2");
-                    row++;
                     int racingNum = Integer.parseInt(frmRace.getTxtRacingNumber().getText().trim());
-                    System.out.println("OK3");
-                    row++;
                     RacingTeam team = (RacingTeam) frmRace.getCbTeam().getSelectedItem();
-                    System.out.println("TIM" + team.getName());
-                    System.out.println("OK4");
-                    row++;
                     RaceItemTableModel rtm = (RaceItemTableModel) frmRace.getTblRaceItem().getModel();
-                    System.out.println("OK5");
-                    row++;
                     List<RaceItem> raceItems = rtm.getRace().getItems();
 
-                    row++;
                     RaceItem r = new RaceItem();
-                    System.out.println("OK6");
                     r.setRaceNumber(racingNum);
-                    System.out.println("OK7");
                     r.setRider(rider);
-                    System.out.println("OK8");
                     r.setStartPosition(startingPos);
-                    System.out.println("OK9");
                     r.setTeam(team);
-                    System.out.println("OK10");
                     boolean existingRider = false;
                     int count = 1;
                     boolean position = false;
@@ -393,40 +210,36 @@ public class RaceController {
 
                         }
                         if (i.getRider().toString().equals(rider.toString())) {
-                            System.out.println("OK11");
                             existingRider = true;
-                            System.out.println("OK12");
                         }
                         if (i.getTeam().getName() == null) {
-                            System.out.println("TIM JE NAL");
                         }
                         if (i.getTeam().getId() == (team.getId())) {
-                            System.out.println("OK13");
                             count++;
                         }
                         if (i.getStartPosition() == startingPos) {
-                            System.out.println("OK14");
                             position = true;
                         }
                     }
-                    System.out.println("ok 14,5");
+                    String message = "";
                     if (!existingRider && count <= 2 && !position) {
-                        System.out.println("OK15");
                         rtm.addRaceItem(racingNum, rider, team, startingPos);
                     } else {
                         if (existingRider) {
-                            JOptionPane.showMessageDialog(frmRace, "Rider already exists!");
+                            message += "Rider already exists!\n";
                         }
                         if (count > 2) {
-                            JOptionPane.showMessageDialog(frmRace, "One racing team consists of only 2 riders!");
+                            message += "One racing team consists of maximum of 2 riders!\n";
                         }
                         if (position) {
-                            JOptionPane.showMessageDialog(frmRace, "Staring position number " + startingPos + " is taken!");
+                            message += "Staring position number " + startingPos + " is taken!\n";
                         }
+                        JOptionPane.showMessageDialog(frmRace, message, "TrackData v1 - Save Race", JOptionPane.INFORMATION_MESSAGE);
+
                     }
 
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(frmRace, "Invalid rider data!" + row, "Error!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frmRace, "Invalid rider data!", "TrackData v1 - Save Race", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -442,7 +255,7 @@ public class RaceController {
                     RaceItemTableModel rtm = (RaceItemTableModel) frmRace.getTblRaceItem().getModel();
                     rtm.removeRaceItem(row);
                 } else {
-                    JOptionPane.showMessageDialog(frmRace, "Please select a row to delete.", "Error!", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(frmRace, "Please select a row to delete.", "TrackData v1 - Save Race", JOptionPane.INFORMATION_MESSAGE);
 
                 }
 
@@ -466,17 +279,30 @@ public class RaceController {
                     race.setTotalLaps(Integer.parseInt(frmRace.getTxtTotalLaps().getText().trim()));
                     race.setItems(rtm.getRace().getItems());
                     race.setCreatedOn(new java.sql.Timestamp(new java.util.Date().getTime()));
-                    List<RaceItem> is = race.getItems();
-                    for (RaceItem i : is) {
-                        System.out.println(i.getRaceNumber());
+
+                    if (JOptionPane.showConfirmDialog(frmRace, "Are you sure you want to save this race?", "TrackData v1 - Save Race", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                        Communication.getInstance().addRace(race);
+                        frmRace.getTxtID().setText(String.valueOf(race.getId()));
+                        JOptionPane.showMessageDialog(frmRace, "Race successfully saved!", "TrackData v1 - Save Team", JOptionPane.INFORMATION_MESSAGE);
+                        frmRace.getTxtID().setText("");
+                        frmRace.getTxtDate().setText("");
+                        frmRace.getTxtRace().setText("");
+                        frmRace.getTxtTotalLaps().setText("");
+                        frmRace.getTxtTrack().setText("");
+                        frmRace.getTxtRacingNumber().setText("");
+                        frmRace.getTxtStartingPosition().setText("");
+                        frmRace.getCbTeam().setSelectedIndex(-1);
+                        frmRace.getCbRider().setSelectedIndex(-1);
+                        clearTableRaceItems(rtm);
                     }
 
-                    Communication.getInstance().addRace(race);
-                    frmRace.getTxtID().setText(String.valueOf(race.getId()));
-                    JOptionPane.showMessageDialog(frmRace, "Race successfully saved!");
                 } catch (Exception ex) {
-                    Logger.getLogger(FrmRace.class.getName()).log(Level.SEVERE, null, ex);
+                    //Logger.getLogger(FrmRace.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            }
+
+            private void clearTableRaceItems(RaceItemTableModel rtm) {
+                rtm.removeAllRaceItems();
             }
 
         });
@@ -495,22 +321,56 @@ public class RaceController {
             private void edit() {
                 Race race = makeRaceFromForm();
                 try {
-                    if (JOptionPane.showConfirmDialog(frmRace, "Are you sure you want to update this race?", "Edit race", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    if (JOptionPane.showConfirmDialog(frmRace, "Are you sure you want to update this race?", "TrackData v1 - Edit race", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                         List<RaceItem> items = race.getItems();
 
                         Communication.getInstance().editRace(race);
 
                         Communication.getInstance().editRaceItems(race, items);
-                        JOptionPane.showMessageDialog(frmRace, "Race information updated successfully!\n", "Edit race", JOptionPane.INFORMATION_MESSAGE);
-                        //frmRace.dispose();
+                        JOptionPane.showMessageDialog(frmRace, "Race information updated successfully!\n", "TrackData v1 - Edit race", JOptionPane.INFORMATION_MESSAGE);
+                        frmRace.dispose();
                     }
 
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(frmRace, "Error editting race!\n" + ex.getMessage(), "Edit race", JOptionPane.ERROR_MESSAGE);
-                    Logger.getLogger(RiderController.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(frmRace, "Error editting race!\n" + ex.getMessage(), "TrackData v1 - Edit race", JOptionPane.ERROR_MESSAGE);
+                    //Logger.getLogger(RiderController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
 
+        });
+        frmRace.addDeleteBtnActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                delete();
+            }
+
+            private void delete() {
+                Race race = makeRaceFromForm();
+                try {
+                    if (JOptionPane.showConfirmDialog(frmRace, "Are you sure you want to delete this race?", "TrackData v1 - Delete race", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                        Communication.getInstance().deleteRace(race);
+                        JOptionPane.showMessageDialog(frmRace, "Race " + race.getName().toUpperCase() + " deleted successfully!\n", "TrackData v1 - Delete race", JOptionPane.INFORMATION_MESSAGE);
+                        frmRace.dispose();
+                    }
+
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(frmRace, "Error deleting race!\n" + ex.getMessage(), "TrackData v1 - Delete race", JOptionPane.ERROR_MESSAGE);
+                    //Logger.getLogger(RiderController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        frmRace.addCancelBtnActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cancel();
+            }
+
+            private void cancel() {
+
+                if (JOptionPane.showConfirmDialog(frmRace, "Are you sure? Any unsaved data will be lost.", "TrackData v1 - Save Race", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    frmRace.dispose();
+                }
+            }
         });
     }
 
@@ -519,11 +379,17 @@ public class RaceController {
         frmRace.getLblRaceNameError().setText("");
         frmRace.getLblTotalLapsError().setText("");
         frmRace.getLblTrackError().setText("");
+        RaceItemTableModel rtm = (RaceItemTableModel) frmRace.getTblRaceItem().getModel();
+
         String msg = "";
+
         if (frmRace.getTxtTrack().getText().isEmpty()) {
             frmRace.getLblTrackError().setText("Please insert track name");
             msg += "Firstname cannot be empty!\n";
 
+        }
+        if (frmRace.getTxtTotalLaps().getText().chars().anyMatch(Character::isAlphabetic)) {
+            frmRace.getLblTotalLapsError().setText("Please insert numeric value");
         }
         if (frmRace.getTxtTotalLaps().getText().isEmpty()) {
             frmRace.getLblTotalLapsError().setText("Please insert number of laps");
@@ -533,10 +399,33 @@ public class RaceController {
             frmRace.getLblRaceNameError().setText("Please insert race name");
             msg += "Nationality cannot be empty!\n";
         }
+        if (frmRace.getTxtDate().getText().chars().anyMatch(Character::isAlphabetic)) {
+            frmRace.getLblDateError().setText("Bad date format");
+            msg += "Date must be in format dd.MM.yyyy.";
+        }
         if (frmRace.getTxtDate().getText().isEmpty()) {
             frmRace.getLblDateError().setText("Please insert race date");
             msg += "Racing number cannot be empty!\n";
         }
+
+        try {
+            String date = frmRace.getTxtDate().getText();
+            String[] dateArray = date.split("\\.");
+            String s1 = dateArray[0];
+            String s2 = dateArray[1];
+            String s3 = dateArray[2];
+            int day = Integer.parseInt(s1);
+            int month = Integer.parseInt(s2);
+            int year = Integer.parseInt(s3);
+            int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+            if (day > 31 || month > 12 || year > currentYear + 1) {
+                frmRace.getLblDateError().setText("Bad date format");
+                msg += "Date must be in format dd.MM.yyyy.";
+            }
+
+        } catch (Exception e) {
+        }
+
         try {
             if (Integer.parseInt(frmRace.getTxtTotalLaps().getText().trim()) < 20 || Integer.parseInt(frmRace.getTxtTotalLaps().getText().trim()) > 23) {
                 frmRace.getLblTotalLapsError().setText("Number of laps must be in range [20-23]");
@@ -544,19 +433,24 @@ public class RaceController {
             }
         } catch (Exception e) {
         }
-        if(!frmRace.getTxtDate().getText().isEmpty()){
-        DateFormat df = new SimpleDateFormat("dd.MM.yyyy.");
-        try {
-            df.parse(frmRace.getTxtDate().getText().trim());
-        } catch (Exception e) {
-            frmRace.getLblDateError().setText("Bad date format");
-            msg += "Date must be in format dd.MM.yyyy.";
+        if (!frmRace.getTxtDate().getText().isEmpty()) {
+            DateFormat df = new SimpleDateFormat("dd.MM.yyyy.");
+            try {
+                df.parse(frmRace.getTxtDate().getText().trim());
+            } catch (Exception e) {
+                frmRace.getLblDateError().setText("Bad date format");
+                msg += "Date must be in format dd.MM.yyyy.";
+            }
         }
-        }
-         boolean TrackAllLetters = frmRace.getTxtTrack().getText().chars().anyMatch(Character::isDigit);
+        boolean TrackAllLetters = frmRace.getTxtTrack().getText().chars().anyMatch(Character::isDigit);
         if (TrackAllLetters) {
             frmRace.getLblTrackError().setText("Please insert a valid track name");
             msg += "Track name contains letters only!\n";
+        }
+        List<RaceItem> raceItems = rtm.getRace().getItems();
+        if (raceItems.size() < 6) {
+            JOptionPane.showMessageDialog(frmRace, "Race must have at least 6 contestants", "TrackData v1 - Save Race", JOptionPane.INFORMATION_MESSAGE);
+            msg += "Race must have at least 6 contestants!\n";
         }
         if (!msg.isEmpty()) {
             throw new Exception(msg);
@@ -571,7 +465,7 @@ public class RaceController {
         try {
             r.setDate(df.parse(frmRace.getTxtDate().getText().trim()));
         } catch (ParseException ex) {
-            Logger.getLogger(RaceController.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(RaceController.class.getName()).log(Level.SEVERE, null, ex);
         }
         r.setUpdatedOn(new java.sql.Timestamp(new java.util.Date().getTime()));
         r.setName(frmRace.getTxtRace().getText().trim());
@@ -579,9 +473,7 @@ public class RaceController {
         RaceItemTableModel rtm = (RaceItemTableModel) frmRace.getTblRaceItem().getModel();
 
         List<RaceItem> items = rtm.getRace().getItems();
-        if (items.isEmpty()) {
-            System.out.println("empty list");
-        }
+        
         r.setItems(items);
 
         return r;

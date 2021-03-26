@@ -66,22 +66,29 @@
                           <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="lblDateError" max="32767" attributes="0"/>
-                          <Component id="lblTotalLapsError" max="32767" attributes="0"/>
-                          <Component id="lblRaceNameError" max="32767" attributes="0"/>
-                          <Component id="lblTrackError" max="32767" attributes="0"/>
-                          <Component id="txtTotalLaps" alignment="0" max="32767" attributes="0"/>
-                          <Component id="txtRace" alignment="0" max="32767" attributes="0"/>
-                          <Component id="txtDate" alignment="0" max="32767" attributes="0"/>
-                          <Component id="txtTrack" alignment="0" max="32767" attributes="0"/>
-                          <Component id="txtID" alignment="0" min="-2" pref="191" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="lblDateError" max="32767" attributes="0"/>
+                                  <Component id="lblRaceNameError" max="32767" attributes="0"/>
+                                  <Component id="lblTrackError" max="32767" attributes="0"/>
+                                  <Component id="txtTotalLaps" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="txtRace" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="txtDate" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="txtTrack" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="txtID" alignment="0" min="-2" pref="191" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="lblCU" min="-2" pref="99" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="lblTotalLapsError" min="-2" pref="209" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="lblCU" min="-2" pref="99" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -127,10 +134,10 @@
                           <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="txtTotalLaps" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="lblTotalLapsError" min="-2" pref="10" max="-2" attributes="0"/>
                   </Group>
               </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="lblTotalLapsError" min="-2" pref="10" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jScrollPane1" min="-2" pref="243" max="-2" attributes="0"/>
@@ -358,10 +365,24 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel9">
       <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="11" style="1"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="ff" type="rgb"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Current user:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblCU">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="11" style="1"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="33" red="33" type="rgb"/>
+        </Property>
+      </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btnEnableChanges">
       <Properties>

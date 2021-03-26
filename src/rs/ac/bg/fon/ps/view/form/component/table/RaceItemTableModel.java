@@ -79,5 +79,8 @@ public class RaceItemTableModel extends AbstractTableModel {
     public Race getRace() {
         return race;
     }
-
+    public void removeAllRaceItems(){
+        race.getItems().clear();
+        fireTableDataChanged();
+    }
 }

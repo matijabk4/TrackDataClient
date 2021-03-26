@@ -78,18 +78,19 @@ public class RaceViewAllController {
             public void windowActivated(WindowEvent e) {
                 fillTblRaces();
                 frmViewRaces.setLocationRelativeTo(null);
-                frmViewRaces.getLblRaceName().setVisible(true);
-                frmViewRaces.getLblRaceStatus().setVisible(true);
+                frmViewRaces.setResizable(false);
+                /*frmViewRaces.getLblRaceName().setVisible(true);
+                frmViewRaces.getLblRaceStatus().setVisible(true);*/
             }
 
         });
-         frmViewRaces.addWindowListener(new WindowAdapter() {
+        frmViewRaces.addWindowListener(new WindowAdapter() {
             @Override
             public void windowOpened(WindowEvent e) {
                 frmViewRaces.getLblRaceName().setVisible(false);
                 frmViewRaces.getLblRaceStatus().setVisible(false);
+                frmViewRaces.setResizable(false);
             }
-            
 
         });
         frmViewRaces.getBtnSetRaceResultAddActionListener(new ActionListener() {
@@ -109,7 +110,7 @@ public class RaceViewAllController {
                     frmViewRaces.getLblStat().setVisible(true);
                     frmViewRaces.getLblRName().setText(race.getName().toUpperCase());
                     frmViewRaces.getLblStat().setText("P E N D I N G");
-                    frmViewRaces.getLblStat().setForeground(Color.yellow);
+                    frmViewRaces.getLblStat().setForeground(new Color(138, 138, 138));
                     /*Rider r = ((RiderTableModel) frmViewRiders.getTblRiders().getModel()).getRiderAt(row);
                     MainCordinator.getInstance().addParam(Constants.PARAM_RIDER, r);
                     MainCordinator.getInstance().openRiderDetailsRiderForm();*/
@@ -124,10 +125,11 @@ public class RaceViewAllController {
         frmViewRaces.getBtnSaveRaceResultAddActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                frmViewRaces.setResizable(false);
                 ResultTableModel rtm = (ResultTableModel) frmViewRaces.getTblResults().getModel();
                 List<RaceItem> raceItemsForSave = rtm.getRaceItems();
                 boolean errorSameFinishingPosition = false;
+                
                 for (int i = 0; i < raceItemsForSave.size() - 1; i++) {
                     RaceItem r1 = raceItemsForSave.get(i);
                     for (int j = i + 1; j < raceItemsForSave.size(); j++) {
@@ -151,14 +153,15 @@ public class RaceViewAllController {
                 }
                 if (!errorSameFinishingPosition && !errorFinishingPositionOutOfBounds) {
                     saveRaceResult(raceItemsForSave);
-                    frmViewRaces.setSize(860, 400);
+                    frmViewRaces.setSize(890, 400);
                     frmViewRaces.getjPanel1().setVisible(false);
                     frmViewRaces.setLocationRelativeTo(null);
-                     /*frmViewRaces.getLblRaceName().setVisible(false);
+                    frmViewRaces.getLblRaceName().setVisible(false);
                     frmViewRaces.getLblRaceStatus().setVisible(false);
                     frmViewRaces.getLblStat().setVisible(false);
-                    frmViewRaces.getLblRName().setVisible(false);*/
+                    frmViewRaces.getLblRName().setVisible(false);
                 }
+                
             }
         });
         frmViewRaces.getBtnDetailsAddActionListener(new ActionListener() {
@@ -174,10 +177,10 @@ public class RaceViewAllController {
                     }*/
                     List<RaceItem> items = getRaceItemsForRace(r);
                     r.setItems(items);
-
                     MainCordinator.getInstance().addParam(Constants.PARAM_RACE, r);
                     MainCordinator.getInstance().openRaceDetailsRiderForm();
-
+                    frmViewRaces.getLblRaceName().setVisible(false);
+                    frmViewRaces.getLblRaceStatus().setVisible(false);
                 } else {
                     JOptionPane.showMessageDialog(frmViewRaces, "You must select a race", "RACE DETAILS", JOptionPane.ERROR_MESSAGE);
                 }
@@ -190,8 +193,7 @@ public class RaceViewAllController {
                 fillTblRaces();
                 centerTableValues();
                 searchFieldSettings();
-                
-               
+
             }
 
         });
@@ -202,7 +204,7 @@ public class RaceViewAllController {
         User currentUser = (User) MainCordinator.getInstance().getParam(Constants.CURRENT_USER);
         prepareView();
 
-        frmViewRaces.setSize(860, 400);
+        frmViewRaces.setSize(890, 400);
         frmViewRaces.getjPanel1().setVisible(false);
         frmViewRaces.getLblCU().setText(currentUser.getFirstname() + " " + currentUser.getLastname());
         frmViewRaces.setVisible(true);
@@ -236,14 +238,14 @@ public class RaceViewAllController {
             int row = frmViewRaces.getTblRaces().getSelectedRow();
             if (row >= 0) {
                 Race r = ((RaceTableModel) frmViewRaces.getTblRaces().getModel()).getRaceAt(row);
-                 frmViewRaces.getLblStat().setText("S A V E D!");
-               frmViewRaces.getLblStat().setForeground(Color.green);
+                frmViewRaces.getLblStat().setText("S A V E D !");
+                frmViewRaces.getLblStat().setForeground(Color.green);
                 JOptionPane.showMessageDialog(frmViewRaces, "Racing statistics for race " + r.getName().toUpperCase() + " successfully saved!", "TrackData v1 - Save Race Results", JOptionPane.INFORMATION_MESSAGE);
-              
+
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(frmViewRaces, "GRESKAAA");
-            Logger.getLogger(RaceViewAllController.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(RaceViewAllController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

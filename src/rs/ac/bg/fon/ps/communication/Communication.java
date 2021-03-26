@@ -326,4 +326,25 @@ public class Communication {
         }
         
     }
+
+    public void deleteRace(Race race) throws Exception{
+        Request request = new Request(Operation.DELETE_RACE, race, null);
+        sender.send(request);
+        
+        Response response = (Response) receiver.receive();
+         if(response.getResult()==Operation.LOGOUT_ALL){
+            socket.close();
+             MainController.getInstance().shutdown();
+            throw new Exception("Server shut down. Goodbye!");
+        }
+        if (response.getException() == null) {
+
+        } else {
+            throw response.getException();
+        }
+    }
+
+    public void deleteRaceItems(int raceID) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

@@ -74,15 +74,15 @@ public class FrmMain extends javax.swing.JFrame {
         jPanel1.setLayout(null);
 
         lblCurrentUser.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lblCurrentUser.setForeground(new java.awt.Color(51, 51, 255));
+        lblCurrentUser.setForeground(new java.awt.Color(255, 0, 0));
         lblCurrentUser.setText("Current user:");
         jPanel1.add(lblCurrentUser);
-        lblCurrentUser.setBounds(10, 410, 120, 20);
+        lblCurrentUser.setBounds(270, 20, 120, 20);
 
         lblCU.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        lblCU.setForeground(new java.awt.Color(255, 51, 51));
+        lblCU.setForeground(new java.awt.Color(51, 51, 255));
         jPanel1.add(lblCU);
-        lblCU.setBounds(140, 400, 150, 40);
+        lblCU.setBounds(400, 10, 150, 40);
         jPanel1.add(lblPicture);
         lblPicture.setBounds(0, 0, 850, 460);
 

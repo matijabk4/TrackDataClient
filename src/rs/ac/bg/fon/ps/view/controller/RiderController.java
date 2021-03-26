@@ -65,7 +65,7 @@ public class RiderController {
                     }
 
                 } catch (Exception ex) {
-                    Logger.getLogger(FrmRider.class.getName()).log(Level.SEVERE, null, ex);
+                    //Logger.getLogger(FrmRider.class.getName()).log(Level.SEVERE, null, ex);
                     // JOptionPane.showMessageDialog(frmRider, ex.getMessage(), "Add new rider", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
@@ -85,7 +85,9 @@ public class RiderController {
             }
 
             private void cancel() {
-                frmRider.dispose();
+               if (JOptionPane.showConfirmDialog(frmRider, "Are you sure? Any unsaved data will be lost.", "TrackData v1 - Save Rider", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    frmRider.dispose();
+                }
             }
         });
 
@@ -109,7 +111,7 @@ public class RiderController {
 
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(frmRider, "Error deleting rider!\n" + ex.getMessage(), "TrackData v1 - Remove Rider", JOptionPane.ERROR_MESSAGE);
-                    Logger.getLogger(RiderController.class.getName()).log(Level.SEVERE, null, ex);
+                    //Logger.getLogger(RiderController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -134,7 +136,7 @@ public class RiderController {
 
                 } catch (Exception ex) {
                     //JOptionPane.showMessageDialog(frmRider, "Error updating rider!\n" + ex.getMessage(), "TrackData v1 - Update Rider", JOptionPane.ERROR_MESSAGE);
-                    Logger.getLogger(RiderController.class.getName()).log(Level.SEVERE, null, ex);
+                    //Logger.getLogger(RiderController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
