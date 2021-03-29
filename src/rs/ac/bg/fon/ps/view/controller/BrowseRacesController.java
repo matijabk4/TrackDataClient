@@ -28,6 +28,7 @@ import rs.ac.bg.fon.ps.domain.Rider;
 import rs.ac.bg.fon.ps.domain.User;
 import rs.ac.bg.fon.ps.view.constant.Constants;
 import rs.ac.bg.fon.ps.view.cordinator.MainCordinator;
+import rs.ac.bg.fon.ps.view.form.FrmBrowseRaces;
 import rs.ac.bg.fon.ps.view.form.FrmViewRaces;
 import rs.ac.bg.fon.ps.view.form.component.table.RaceItemTableModel;
 import rs.ac.bg.fon.ps.view.form.component.table.RaceTableModel;
@@ -38,11 +39,11 @@ import rs.ac.bg.fon.ps.view.form.component.table.RiderTableModel;
  *
  * @author laptop-02
  */
-public class RaceViewAllController {
+public class BrowseRacesController {
 
-    private final FrmViewRaces frmViewRaces;
+    private final FrmBrowseRaces frmViewRaces;
 
-    public RaceViewAllController(FrmViewRaces frmViewRaces) {
+    public BrowseRacesController(FrmBrowseRaces frmViewRaces) {
         this.frmViewRaces = frmViewRaces;
         addActionListener();
         addFocusListener();
@@ -87,107 +88,14 @@ public class RaceViewAllController {
         frmViewRaces.addWindowListener(new WindowAdapter() {
             @Override
             public void windowOpened(WindowEvent e) {
-                frmViewRaces.getLblRaceName().setVisible(false);
-                frmViewRaces.getLblRaceStatus().setVisible(false);
-                frmViewRaces.setResizable(false);
-            }
-
-        });
-        frmViewRaces.getBtnSetRaceResultAddActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int row = frmViewRaces.getTblRaces().getSelectedRow();
-                if (row >= 0) {
-                    Race race = ((RaceTableModel) frmViewRaces.getTblRaces().getModel()).getRaceAt(row);
-                    fillTblResults(race.getId());
-                    frmViewRaces.setSize(1300, 900);
-                    frmViewRaces.setResizable(false);
-                    frmViewRaces.setLocationRelativeTo(null);
-                    frmViewRaces.getjPanel1().setVisible(true);
-                    frmViewRaces.getLblRaceName().setVisible(true);
-                    frmViewRaces.getLblRaceStatus().setVisible(true);
-                    frmViewRaces.getLblRName().setVisible(true);
-                    frmViewRaces.getLblStat().setVisible(true);
-                    frmViewRaces.getLblRName().setText(race.getName().toUpperCase());
-                    frmViewRaces.getLblStat().setText("P E N D I N G");
-                    frmViewRaces.getLblStat().setForeground(new Color(138, 138, 138));
-                    /*Rider r = ((RiderTableModel) frmViewRiders.getTblRiders().getModel()).getRiderAt(row);
-                    MainCordinator.getInstance().addParam(Constants.PARAM_RIDER, r);
-                    MainCordinator.getInstance().openRiderDetailsRiderForm();*/
-
-                } else {
-                    JOptionPane.showMessageDialog(frmViewRaces, "You must select a race", "RACE RESULTS", JOptionPane.ERROR_MESSAGE);
-                }
-
-            }
-
-        });
-        frmViewRaces.getBtnSaveRaceResultAddActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frmViewRaces.setResizable(false);
-                ResultTableModel rtm = (ResultTableModel) frmViewRaces.getTblResults().getModel();
-                List<RaceItem> raceItemsForSave = rtm.getRaceItems();
-                boolean errorSameFinishingPosition = false;
-                
-                for (int i = 0; i < raceItemsForSave.size() - 1; i++) {
-                    RaceItem r1 = raceItemsForSave.get(i);
-                    for (int j = i + 1; j < raceItemsForSave.size(); j++) {
-                        RaceItem r2 = raceItemsForSave.get(j);
-                        if (r1.getFinishPosition() == r2.getFinishPosition()) {
-                            errorSameFinishingPosition = true;
-                            JOptionPane.showMessageDialog(frmViewRaces, "Two riders cannot have the same finishing position!", "TrackData v1 - Save Race Results", JOptionPane.ERROR_MESSAGE);
-                            break;
-                        }
-                    }
-                    break;
-                }
-                boolean errorFinishingPositionOutOfBounds = false;
-                int bound = raceItemsForSave.size();
-                for (RaceItem raceItem : raceItemsForSave) {
-                    if (raceItem.getFinishPosition() > bound || raceItem.getFinishPosition() <= 0) {
-                        errorFinishingPositionOutOfBounds = true;
-                        JOptionPane.showMessageDialog(frmViewRaces, "Finishing position must be in range [1-" + bound + "]!", "TrackData v1 - Save Race Results", JOptionPane.ERROR_MESSAGE);
-                        break;
-                    }
-                }
-                if (!errorSameFinishingPosition && !errorFinishingPositionOutOfBounds) {
-                    saveRaceResult(raceItemsForSave);
-                    frmViewRaces.setSize(890, 400);
-                    frmViewRaces.getjPanel1().setVisible(false);
-                    frmViewRaces.setLocationRelativeTo(null);
-                    frmViewRaces.getLblRaceName().setVisible(false);
-                    frmViewRaces.getLblRaceStatus().setVisible(false);
-                    frmViewRaces.getLblStat().setVisible(false);
-                    frmViewRaces.getLblRName().setVisible(false);
-                }
-                
-            }
-        });
-        frmViewRaces.getBtnDetailsAddActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
                
-                int row = frmViewRaces.getTblRaces().getSelectedRow();
-                if (row >= 0) {
-                    Race r = ((RaceTableModel) frmViewRaces.getTblRaces().getModel()).getRaceAt(row);
-                    /*RaceItemTableModel rtm = (RaceItemTableModel) frmViewRaces.getTblResults().getModel();
-                    List<RaceItem> items = rtm.getRace().getItems();
-                    for (RaceItem item : items) {
-                        System.out.println(item.getFinishPosition());
-                    }*/
-                    List<RaceItem> items = getRaceItemsForRace(r);
-                    r.setItems(items);
-                    MainCordinator.getInstance().addParam(Constants.PARAM_RACE, r);
-                    MainCordinator.getInstance().openRaceDetailsRiderForm();
-                    frmViewRaces.getLblRaceName().setVisible(false);
-                    frmViewRaces.getLblRaceStatus().setVisible(false);
-                } else {
-                    JOptionPane.showMessageDialog(frmViewRaces, "Please select a race", "TrackData v1 - Race Details", JOptionPane.INFORMATION_MESSAGE);
-                }
+                frmViewRaces.setResizable(false);
             }
 
         });
+        
+        
+      
         frmViewRaces.addWindowListener(new WindowAdapter() {
             @Override
             public void windowActivated(WindowEvent e) {
@@ -205,8 +113,8 @@ public class RaceViewAllController {
         User currentUser = (User) MainCordinator.getInstance().getParam(Constants.CURRENT_USER);
         prepareView();
 
-        frmViewRaces.setSize(890, 400);
-        frmViewRaces.getjPanel1().setVisible(false);
+        frmViewRaces.setSize(690,440);
+        
         frmViewRaces.getLblCU().setText(currentUser.getFirstname() + " " + currentUser.getLastname());
         frmViewRaces.setVisible(true);
         frmViewRaces.setResizable(false);
@@ -215,8 +123,7 @@ public class RaceViewAllController {
     private void prepareView() {
         frmViewRaces.getTblRaces().getTableHeader().setResizingAllowed(false);
         frmViewRaces.getTblRaces().getTableHeader().setReorderingAllowed(false);
-        frmViewRaces.getTblResults().getTableHeader().setResizingAllowed(false);
-        frmViewRaces.getTblResults().getTableHeader().setReorderingAllowed(false);
+       
         //fillTblRiders();
     }
 
@@ -239,8 +146,7 @@ public class RaceViewAllController {
             int row = frmViewRaces.getTblRaces().getSelectedRow();
             if (row >= 0) {
                 Race r = ((RaceTableModel) frmViewRaces.getTblRaces().getModel()).getRaceAt(row);
-                frmViewRaces.getLblStat().setText("S A V E D !");
-                frmViewRaces.getLblStat().setForeground(Color.green);
+                
                 JOptionPane.showMessageDialog(frmViewRaces, "Racing statistics for race " + r.getName().toUpperCase() + " successfully saved!", "TrackData v1 - Save Race Results", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (Exception ex) {
@@ -255,7 +161,6 @@ public class RaceViewAllController {
         try {
             raceItems = Communication.getInstance().getRaceItems(id);
             ResultTableModel rtm = new ResultTableModel(raceItems);
-            frmViewRaces.getTblResults().setModel(rtm);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(frmViewRaces, "Error: " + ex.getMessage(), "ERROR DETAILS", JOptionPane.ERROR_MESSAGE);
             Logger.getLogger(RiderViewAllController.class.getName()).log(Level.SEVERE, null, ex);

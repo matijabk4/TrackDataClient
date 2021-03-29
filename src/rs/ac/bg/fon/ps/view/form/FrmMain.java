@@ -58,12 +58,15 @@ public class FrmMain extends javax.swing.JFrame {
         jMenuRider = new javax.swing.JMenu();
         jMenuItemNewRider = new javax.swing.JMenuItem();
         jMenuItemRiderShowAll = new javax.swing.JMenuItem();
+        jMenuItemBrowseRiders = new javax.swing.JMenuItem();
         jMenuTeam = new javax.swing.JMenu();
         jMenuItemNewTeam = new javax.swing.JMenuItem();
         jMenuItemTeamShowAll = new javax.swing.JMenuItem();
+        jMenuItemBrowseTeams = new javax.swing.JMenuItem();
         jMenuRace = new javax.swing.JMenu();
         jMenuItemNewRace = new javax.swing.JMenuItem();
         jMenuItemRaceShowAll = new javax.swing.JMenuItem();
+        jMenuItemBrowseRaces = new javax.swing.JMenuItem();
         jMenuLogout = new javax.swing.JMenu();
         jMenuItemLogout = new javax.swing.JMenuItem();
 
@@ -77,12 +80,12 @@ public class FrmMain extends javax.swing.JFrame {
         lblCurrentUser.setForeground(new java.awt.Color(255, 0, 0));
         lblCurrentUser.setText("Current user:");
         jPanel1.add(lblCurrentUser);
-        lblCurrentUser.setBounds(270, 20, 120, 20);
+        lblCurrentUser.setBounds(270, 420, 120, 20);
 
         lblCU.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblCU.setForeground(new java.awt.Color(51, 51, 255));
         jPanel1.add(lblCU);
-        lblCU.setBounds(400, 10, 150, 40);
+        lblCU.setBounds(400, 410, 150, 40);
         jPanel1.add(lblPicture);
         lblPicture.setBounds(0, 0, 850, 460);
 
@@ -104,6 +107,9 @@ public class FrmMain extends javax.swing.JFrame {
         });
         jMenuRider.add(jMenuItemRiderShowAll);
 
+        jMenuItemBrowseRiders.setText("Browse riders");
+        jMenuRider.add(jMenuItemBrowseRiders);
+
         jMenuBarMain.add(jMenuRider);
 
         jMenuTeam.setText("Team");
@@ -124,6 +130,9 @@ public class FrmMain extends javax.swing.JFrame {
         });
         jMenuTeam.add(jMenuItemTeamShowAll);
 
+        jMenuItemBrowseTeams.setText("Browse teams");
+        jMenuTeam.add(jMenuItemBrowseTeams);
+
         jMenuBarMain.add(jMenuTeam);
 
         jMenuRace.setText("Race");
@@ -138,6 +147,9 @@ public class FrmMain extends javax.swing.JFrame {
             }
         });
         jMenuRace.add(jMenuItemRaceShowAll);
+
+        jMenuItemBrowseRaces.setText("Browse races");
+        jMenuRace.add(jMenuItemBrowseRaces);
 
         jMenuBarMain.add(jMenuRace);
 
@@ -209,6 +221,9 @@ public class FrmMain extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar jMenuBarMain;
+    private javax.swing.JMenuItem jMenuItemBrowseRaces;
+    private javax.swing.JMenuItem jMenuItemBrowseRiders;
+    private javax.swing.JMenuItem jMenuItemBrowseTeams;
     private javax.swing.JMenuItem jMenuItemLogout;
     private javax.swing.JMenuItem jMenuItemNewRace;
     private javax.swing.JMenuItem jMenuItemNewRider;
@@ -308,4 +323,17 @@ public class FrmMain extends javax.swing.JFrame {
     public void frmMainWindowListener(WindowListener windowListener){
         this.addWindowListener(windowListener);
     }
+
+    public JMenuItem getjMenuItemBrowseRaces() {
+        return jMenuItemBrowseRaces;
+    }
+
+    public JMenuItem getjMenuItemBrowseRiders() {
+        return jMenuItemBrowseRiders;
+    }
+
+    public JMenuItem getjMenuItemBrowseTeams() {
+        return jMenuItemBrowseTeams;
+    }
+    
 }

@@ -24,6 +24,7 @@ import rs.ac.bg.fon.ps.domain.RacingTeam;
 import rs.ac.bg.fon.ps.domain.User;
 import rs.ac.bg.fon.ps.view.constant.Constants;
 import rs.ac.bg.fon.ps.view.cordinator.MainCordinator;
+import rs.ac.bg.fon.ps.view.form.FrmBrowseTeams;
 import rs.ac.bg.fon.ps.view.form.FrmViewTeams;
 import rs.ac.bg.fon.ps.view.form.component.table.TeamTableModel;
 
@@ -31,11 +32,11 @@ import rs.ac.bg.fon.ps.view.form.component.table.TeamTableModel;
  *
  * @author laptop-02
  */
-public class TeamViewAllController {
+public class BrowseTeamsController {
 
-    private final FrmViewTeams frmViewTeams;
+    private final FrmBrowseTeams frmViewTeams;
 
-    public TeamViewAllController(FrmViewTeams frmViewTeams) {
+    public BrowseTeamsController(FrmBrowseTeams frmViewTeams) {
         this.frmViewTeams = frmViewTeams;
         addActionListener();
         addFocusListener();
@@ -65,22 +66,7 @@ public class TeamViewAllController {
     }
 
     private void addActionListener() {
-        frmViewTeams.getBtnDetailsAddActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frmViewTeams, "Teams successfully loaded!", "TrackData v1 - Browse Teams", JOptionPane.INFORMATION_MESSAGE);
-                
-                int row = frmViewTeams.getTblTeams().getSelectedRow();
-                if (row >= 0) {
-                    RacingTeam t = ((TeamTableModel) frmViewTeams.getTblTeams().getModel()).getTeamAt(row);
-                    MainCordinator.getInstance().addParam(Constants.PARAM_TEAM, t);
-                    MainCordinator.getInstance().openTeamDetailsTeamForm();
-
-                } else {
-                    JOptionPane.showMessageDialog(frmViewTeams, "You must select a team", "TEAM DETAILS", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
+       
         frmViewTeams.addWindowListener(new WindowAdapter() {
             @Override
             public void windowActivated(WindowEvent e) {
@@ -97,12 +83,7 @@ public class TeamViewAllController {
             }
 
         });*/
-        frmViewTeams.getBtnAddAddActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MainCordinator.getInstance().openTeamAddTeamForm();
-            }
-        });
+       
     }
 
     public void openForm() {

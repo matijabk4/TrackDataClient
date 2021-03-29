@@ -134,6 +134,11 @@ public class FrmViewRaces extends javax.swing.JDialog {
         btnDetails.setText("Details");
 
         btnAdd.setText("Add");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
 
         txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -234,6 +239,10 @@ public class FrmViewRaces extends javax.swing.JDialog {
     private void btnSetRaceResultActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSetRaceResultActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnSetRaceResultActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAddActionPerformed
 
     /**
      * @param args the command line arguments

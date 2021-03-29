@@ -107,7 +107,24 @@ public class MainController {
                 MainCordinator.getInstance().openViewAllRacesForm();
             }
         });
-
+frmMain.getjMenuItemBrowseRiders().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainCordinator.getInstance().openBrowseRidersForm();
+            }
+        });
+frmMain.getjMenuItemBrowseTeams().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainCordinator.getInstance().openBrowseTeamsForm();
+            }
+        });
+frmMain.getjMenuItemBrowseRaces().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainCordinator.getInstance().openBrowseRacesForm();
+            }
+        });
         frmMain.getjMenuItemLogout().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

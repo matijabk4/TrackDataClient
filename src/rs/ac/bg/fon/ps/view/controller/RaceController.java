@@ -104,7 +104,7 @@ public class RaceController {
                 frmRace.getTxtID().setText(r.getId() + "");
                 frmRace.getTxtTrack().setText(r.getTrack());
 
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-dd-MM");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                  {
                     try {
                         Date d = sdf.parse(r.getDate().toString());
@@ -283,7 +283,7 @@ public class RaceController {
                     if (JOptionPane.showConfirmDialog(frmRace, "Are you sure you want to save this race?", "TrackData v1 - Save Race", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                         Communication.getInstance().addRace(race);
                         frmRace.getTxtID().setText(String.valueOf(race.getId()));
-                        JOptionPane.showMessageDialog(frmRace, "Race successfully saved!", "TrackData v1 - Save Team", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(frmRace, "Race successfully saved!", "TrackData v1 - Save Race", JOptionPane.INFORMATION_MESSAGE);
                         frmRace.getTxtID().setText("");
                         frmRace.getTxtDate().setText("");
                         frmRace.getTxtRace().setText("");

@@ -7,7 +7,11 @@ package rs.ac.bg.fon.ps.view.cordinator;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.JOptionPane;
 import rs.ac.bg.fon.ps.communication.ProcessServerResponse;
+import rs.ac.bg.fon.ps.view.controller.BrowseRacesController;
+import rs.ac.bg.fon.ps.view.controller.BrowseRidersController;
+import rs.ac.bg.fon.ps.view.controller.BrowseTeamsController;
 import rs.ac.bg.fon.ps.view.controller.LoginController;
 import rs.ac.bg.fon.ps.view.controller.MainController;
 import rs.ac.bg.fon.ps.view.controller.RaceController;
@@ -16,6 +20,9 @@ import rs.ac.bg.fon.ps.view.controller.RiderController;
 import rs.ac.bg.fon.ps.view.controller.RiderViewAllController;
 import rs.ac.bg.fon.ps.view.controller.TeamController;
 import rs.ac.bg.fon.ps.view.controller.TeamViewAllController;
+import rs.ac.bg.fon.ps.view.form.FrmBrowseRaces;
+import rs.ac.bg.fon.ps.view.form.FrmBrowseRiders;
+import rs.ac.bg.fon.ps.view.form.FrmBrowseTeams;
 import rs.ac.bg.fon.ps.view.form.FrmLogin;
 import rs.ac.bg.fon.ps.view.form.FrmMain;
 import rs.ac.bg.fon.ps.view.form.FrmRace;
@@ -76,7 +83,7 @@ public class MainCordinator {
         FrmRider riderDetails = new FrmRider(mainContoller.getFrmMain(), true);
         RiderController riderController = new RiderController(riderDetails);
         riderController.openForm(FormMode.FORM_VIEW);
-    }
+        }
 
     public void openRiderAddRiderForm() {
         FrmRider riderAdd = new FrmRider(mainContoller.getFrmMain(), true);
@@ -138,6 +145,27 @@ public class MainCordinator {
         FrmRace raceDetails = new FrmRace(mainContoller.getFrmMain(), true);
         RaceController raceController = new RaceController(raceDetails);
         raceController.openForm(FormMode.FORM_VIEW);
+    }
+
+    public void openBrowseRidersForm() {
+         FrmBrowseRiders form = new FrmBrowseRiders(mainContoller.getFrmMain(), true);
+
+        BrowseRidersController browseRidersController = new BrowseRidersController(form);
+        browseRidersController.openForm();
+    }
+
+    public void openBrowseTeamsForm() {
+        FrmBrowseTeams form = new FrmBrowseTeams(mainContoller.getFrmMain(), true);
+
+        BrowseTeamsController browseTeamsController = new BrowseTeamsController(form);
+        browseTeamsController.openForm();
+    }
+
+    public void openBrowseRacesForm() {
+        FrmBrowseRaces form = new FrmBrowseRaces(mainContoller.getFrmMain(), true);
+
+        BrowseRacesController browseRacesController = new BrowseRacesController(form);
+        browseRacesController.openForm();
     }
 
 

@@ -23,6 +23,7 @@ import rs.ac.bg.fon.ps.domain.Rider;
 import rs.ac.bg.fon.ps.domain.User;
 import rs.ac.bg.fon.ps.view.constant.Constants;
 import rs.ac.bg.fon.ps.view.cordinator.MainCordinator;
+import rs.ac.bg.fon.ps.view.form.FrmBrowseRiders;
 import rs.ac.bg.fon.ps.view.form.FrmViewRiders;
 import rs.ac.bg.fon.ps.view.form.component.table.RiderTableModel;
 
@@ -30,11 +31,11 @@ import rs.ac.bg.fon.ps.view.form.component.table.RiderTableModel;
  *
  * @author laptop-02
  */
-public class RiderViewAllController {
+public class BrowseRidersController {
     
-    private final FrmViewRiders frmViewRiders;
+    private final FrmBrowseRiders frmViewRiders;
     
-    public RiderViewAllController(FrmViewRiders frmViewRiders) {
+    public BrowseRidersController(FrmBrowseRiders frmViewRiders) {
         this.frmViewRiders = frmViewRiders;
         addActionListener();
         addFocusListener();
@@ -64,21 +65,7 @@ public class RiderViewAllController {
     }
     
     private void addActionListener() {
-        frmViewRiders.getBtnDetailsAddActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                  
-                int row = frmViewRiders.getTblRiders().getSelectedRow();
-                if (row >= 0) {
-                    Rider r = ((RiderTableModel) frmViewRiders.getTblRiders().getModel()).getRiderAt(row);
-                    MainCordinator.getInstance().addParam(Constants.PARAM_RIDER, r);
-                    MainCordinator.getInstance().openRiderDetailsRiderForm();
-                    
-                } else {
-                    JOptionPane.showMessageDialog(frmViewRiders, "You must select a rider", "RIDER DETAILS", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
+        
         frmViewRiders.addWindowListener(new WindowAdapter() {
             @Override
             public void windowActivated(WindowEvent e) {
@@ -88,12 +75,7 @@ public class RiderViewAllController {
             }
             
         });
-        frmViewRiders.getBtnAddAddActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MainCordinator.getInstance().openRiderAddRiderForm();
-            }
-        });
+        
     }
     
     public void openForm() {

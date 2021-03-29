@@ -59,7 +59,9 @@ public class TeamController {
                         Communication.getInstance().addTeam(team);
                         frmTeam.getTxtID().setText("ID successfully generated!");
                         System.out.println(team.getId());
-                        JOptionPane.showMessageDialog(frmTeam, "Team successfully saved!", "TrackData v1 - Save Team", JOptionPane.INFORMATION_MESSAGE);
+                        //JOptionPane.showMessageDialog(frmTeam, "Team successfully saved!", "TrackData v1 - Save Team", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(frmTeam, "Team could not be saved!", "TrackData v1 - Save Team", JOptionPane.ERROR_MESSAGE);
+                        
                         frmTeam.getTxtID().setText("");
                         frmTeam.getTxtBudget().setText("");
                         frmTeam.getTxtHQ().setText("");
@@ -149,12 +151,14 @@ public class TeamController {
         frmTeam.getLblCU().setText(currentUser.getFirstname() + " " + currentUser.getLastname());
         frmTeam.setVisible(true);
         frmTeam.setResizable(false);
+        
     }
 
     private void prepareView(FormMode formMode) {
         //fillCbMeasurementUnit();
         setupComponents(formMode);
         frmTeam.setResizable(false);
+        frmTeam.setSize(680, 300);
     }
 
     /*private void fillCbMeasurementUnit() {

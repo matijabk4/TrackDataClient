@@ -75,6 +75,7 @@ public class RiderController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setupComponents(FormMode.FORM_EDIT);
+                       
             }
         });
 
@@ -148,6 +149,7 @@ public class RiderController {
         prepareView(formMode);
         frmRider.getLblCU().setText(currentUser.getFirstname() + " " + currentUser.getLastname());
         frmRider.setVisible(true);
+    
     }
 
     private void prepareView(FormMode formMode) {
@@ -252,8 +254,7 @@ public class RiderController {
         if (frmRider.getTxtFName().getText().isEmpty()) {
             frmRider.getLblFirstnameError().setText("Please insert firstname");
             msg += "Firstname cannot be empty!\n";
-
-        }
+            }
         if (frmRider.getTxtSName().getText().isEmpty()) {
             frmRider.getLblSurnameError().setText("Please insert surname");
             msg += "Surname cannot be empty!\n";
@@ -337,6 +338,7 @@ public class RiderController {
             msg += "Please insert a valid nationality!\n";
         }
         if (!msg.isEmpty()) {
+            JOptionPane.showMessageDialog(frmRider, "Rider cannot be saved!","TrackData v1 - Save Rider",JOptionPane.ERROR_MESSAGE);
             throw new Exception(msg);
         }
     }
@@ -439,6 +441,7 @@ public class RiderController {
             msg += "Please insert a valid nationality!\n";
         }
         if (!msg.isEmpty()) {
+            JOptionPane.showMessageDialog(frmRider, "Rider information cannot be updated!","TrackData v1 - Update Rider",JOptionPane.ERROR_MESSAGE);
             throw new Exception(msg);
         }
     }
