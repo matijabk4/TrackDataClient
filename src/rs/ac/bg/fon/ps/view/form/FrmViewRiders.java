@@ -56,7 +56,6 @@ public class FrmViewRiders extends javax.swing.JDialog {
         btnAdd = new javax.swing.JButton();
         lblCurrentUser = new javax.swing.JLabel();
         lblCU = new javax.swing.JLabel();
-        txtSearch = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("TrackData v1 - View All Riders");
@@ -100,20 +99,6 @@ public class FrmViewRiders extends javax.swing.JDialog {
         lblCU.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblCU.setForeground(new java.awt.Color(51, 51, 255));
 
-        txtSearch.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                txtSearchFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txtSearchFocusLost(evt);
-            }
-        });
-        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtSearchKeyReleased(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -128,12 +113,9 @@ public class FrmViewRiders extends javax.swing.JDialog {
                             .addComponent(btnDetails, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
                             .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblCurrentUser, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblCU, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(lblCurrentUser, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblCU, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -151,9 +133,7 @@ public class FrmViewRiders extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addComponent(btnAdd))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15))
+                .addGap(53, 53, 53))
         );
 
         pack();
@@ -190,27 +170,6 @@ public class FrmViewRiders extends javax.swing.JDialog {
         JOptionPane.showMessageDialog(this, "Please fill out all the fields. Cick 'Validate' once you are finished. ", "TrackData 1.0", JOptionPane.INFORMATION_MESSAGE);*/
     }//GEN-LAST:event_btnAddActionPerformed
 
-    private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
-        RiderTableModel table = (RiderTableModel) tblRiders.getModel();
-        String search = txtSearch.getText().trim();
-
-        //      String pretrazi2 = txtPretrazi.getText().toUpperCase(); // za registraciju
-        TableRowSorter<RiderTableModel> tr = new TableRowSorter<>(table);
-        tblRiders.setRowSorter(tr);
-
-        tr.setRowFilter(RowFilter.regexFilter(search));
-        tr.setRowFilter(RowFilter.regexFilter("(?i)" + search));
-
-        //       tr.setRowFilter(RowFilter.regexFilter(pretrazi2));
-
-    }//GEN-LAST:event_txtSearchKeyReleased
-
-    private void txtSearchFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSearchFocusGained
-    }//GEN-LAST:event_txtSearchFocusGained
-
-    private void txtSearchFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSearchFocusLost
-    }//GEN-LAST:event_txtSearchFocusLost
-
     /**
      * @param args the command line arguments
      */
@@ -222,7 +181,6 @@ public class FrmViewRiders extends javax.swing.JDialog {
     private javax.swing.JLabel lblCU;
     private javax.swing.JLabel lblCurrentUser;
     private javax.swing.JTable tblRiders;
-    private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 
     public void getBtnDetailsAddActionListener(ActionListener actionListener) {
@@ -261,11 +219,11 @@ public class FrmViewRiders extends javax.swing.JDialog {
         btnAdd.addActionListener(actionListener);
     }
 
-    public void getTxtSearchAddFocus(FocusListener focusListener) {
+    /*public void getTxtSearchAddFocus(FocusListener focusListener) {
         txtSearch.addFocusListener(focusListener);
     }
 
     public JTextField getTxtSearch() {
         return txtSearch;
-    }
+    }*/
 }

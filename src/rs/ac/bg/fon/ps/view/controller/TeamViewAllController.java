@@ -42,7 +42,7 @@ public class TeamViewAllController {
     }
 
     private void addFocusListener() {
-        frmViewTeams.getTxtSearchAddFocus(new FocusListener() {
+        /*frmViewTeams.getTxtSearchAddFocus(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
                 if (frmViewTeams.getTxtSearch().getText().equals("Search...")) {
@@ -61,14 +61,13 @@ public class TeamViewAllController {
                     frmViewTeams.getTxtSearch().setForeground(Color.black);
                 }
             }
-        });
+        });*/
     }
 
     private void addActionListener() {
         frmViewTeams.getBtnDetailsAddActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frmViewTeams, "Teams successfully loaded!", "TrackData v1 - Browse Teams", JOptionPane.INFORMATION_MESSAGE);
                 
                 int row = frmViewTeams.getTblTeams().getSelectedRow();
                 if (row >= 0) {
@@ -77,7 +76,7 @@ public class TeamViewAllController {
                     MainCordinator.getInstance().openTeamDetailsTeamForm();
 
                 } else {
-                    JOptionPane.showMessageDialog(frmViewTeams, "You must select a team", "TEAM DETAILS", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frmViewTeams, "Please select a team", "TrackData v1 - Team Details", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         });
@@ -86,7 +85,7 @@ public class TeamViewAllController {
             public void windowActivated(WindowEvent e) {
                 fillTblTeams();
                 centerTableValues();
-                searchFieldSettings();
+                //searchFieldSettings();
             }
 
         });
@@ -153,7 +152,7 @@ public class TeamViewAllController {
         //frmViewTeams.getTblTeams().setAutoCreateRowSorter(true);
     }
 
-    private void searchFieldSettings() {
+   /* private void searchFieldSettings() {
 
         if (!frmViewTeams.getTxtSearch().getText().equals("Search...")) {
             frmViewTeams.getTxtSearch().setText("Search...");
@@ -161,5 +160,5 @@ public class TeamViewAllController {
 
         }
 
-    }
+    }*/
 }

@@ -75,7 +75,7 @@ public class RiderController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setupComponents(FormMode.FORM_EDIT);
-                       
+
             }
         });
 
@@ -86,8 +86,12 @@ public class RiderController {
             }
 
             private void cancel() {
-               if (JOptionPane.showConfirmDialog(frmRider, "Are you sure? Any unsaved data will be lost.", "TrackData v1 - Save Rider", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                    frmRider.dispose();
+                if (!frmRider.getBtnEnableChanges().isEnabled()) {
+                    if (JOptionPane.showConfirmDialog(frmRider, "Are you sure? Any unsaved data will be lost.", "TrackData v1 - Save Rider", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                        frmRider.dispose();
+                    }
+                }else{
+                        frmRider.dispose();
                 }
             }
         });
@@ -149,7 +153,7 @@ public class RiderController {
         prepareView(formMode);
         frmRider.getLblCU().setText(currentUser.getFirstname() + " " + currentUser.getLastname());
         frmRider.setVisible(true);
-    
+
     }
 
     private void prepareView(FormMode formMode) {
@@ -254,7 +258,7 @@ public class RiderController {
         if (frmRider.getTxtFName().getText().isEmpty()) {
             frmRider.getLblFirstnameError().setText("Please insert firstname");
             msg += "Firstname cannot be empty!\n";
-            }
+        }
         if (frmRider.getTxtSName().getText().isEmpty()) {
             frmRider.getLblSurnameError().setText("Please insert surname");
             msg += "Surname cannot be empty!\n";
@@ -288,7 +292,7 @@ public class RiderController {
             try {
                 if (r.getRacingNum().equals(Integer.valueOf(frmRider.getTxtRacingNum().getText()))) {
                     racingNumber = true;
-                            
+
                 }
             } catch (Exception e) {
 
@@ -316,6 +320,30 @@ public class RiderController {
             frmRider.getLblSurnameError().setText("Please insert a new surname");
             msg += "Surname contains letters only!\n";
         }
+        try {
+            char ch = frmRider.getTxtFName().getText().charAt(0);
+            if (!Character.isUpperCase(ch)) {
+                frmRider.getLblFirstnameError().setText("Firstname starts with capital letter");
+                msg += "Firstname starts with capital letter!\n";
+            }
+        } catch (Exception e) {
+        }
+        try {
+            char ch = frmRider.getTxtSName().getText().charAt(0);
+            if (!Character.isUpperCase(ch)) {
+                frmRider.getLblSurnameError().setText("Surname starts with capital letter");
+                msg += "Surname starts with capital letter!\n";
+            }
+        } catch (Exception e) {
+        }
+        try {
+            char ch = frmRider.getTxtNationality().getText().charAt(0);
+            if (!Character.isUpperCase(ch)) {
+                frmRider.getLblNationalityError().setText("Nationality starts with capital letter");
+                msg += "Nationality starts with capital letter!\n";
+            }
+        } catch (Exception e) {
+        }
         if (frmRider.getTxtSName().getText().trim().length() < 2) {
             frmRider.getLblSurnameError().setText("Please insert a new surname");
             msg += "Surname is too short!\n";
@@ -338,7 +366,6 @@ public class RiderController {
             msg += "Please insert a valid nationality!\n";
         }
         if (!msg.isEmpty()) {
-            JOptionPane.showMessageDialog(frmRider, "Rider cannot be saved!","TrackData v1 - Save Rider",JOptionPane.ERROR_MESSAGE);
             throw new Exception(msg);
         }
     }
@@ -376,7 +403,30 @@ public class RiderController {
             }
 
         }
-
+        try {
+            char ch = frmRider.getTxtFName().getText().charAt(0);
+            if (!Character.isUpperCase(ch)) {
+                frmRider.getLblFirstnameError().setText("Firstname starts with capital letter");
+                msg += "Firstname starts with capital letter!\n";
+            }
+        } catch (Exception e) {
+        }
+        try {
+            char ch = frmRider.getTxtSName().getText().charAt(0);
+            if (!Character.isUpperCase(ch)) {
+                frmRider.getLblSurnameError().setText("Surname starts with capital letter");
+                msg += "Surname starts with capital letter!\n";
+            }
+        } catch (Exception e) {
+        }
+        try {
+            char ch = frmRider.getTxtNationality().getText().charAt(0);
+            if (!Character.isUpperCase(ch)) {
+                frmRider.getLblNationalityError().setText("Nationality starts with capital letter");
+                msg += "Nationality starts with capital letter!\n";
+            }
+        } catch (Exception e) {
+        }
         List<Rider> riders = Communication.getInstance().getAllRiders();
         int riderExists = 0;
         int racingNumberExists = 0;
@@ -384,8 +434,8 @@ public class RiderController {
             if (r.getFirstname().toUpperCase().equals(frmRider.getTxtFName().getText().toUpperCase()) && r.getSurname().toUpperCase().equals(frmRider.getTxtSName().getText().toUpperCase()) && r.getID() != Integer.parseInt(frmRider.getTxtID().getText().trim())) {
                 riderExists++;
                 if (riderExists > 0) {
-                    frmRider.getLblFirstnameError().setText("Please insert a new firstname.");
-                    frmRider.getLblSurnameError().setText("Please insert a new surname.");
+                    frmRider.getLblFirstnameError().setText("Rider already exists");
+                    frmRider.getLblSurnameError().setText("Rider already exists");
                 }
             }
             try {
@@ -441,7 +491,6 @@ public class RiderController {
             msg += "Please insert a valid nationality!\n";
         }
         if (!msg.isEmpty()) {
-            JOptionPane.showMessageDialog(frmRider, "Rider information cannot be updated!","TrackData v1 - Update Rider",JOptionPane.ERROR_MESSAGE);
             throw new Exception(msg);
         }
     }

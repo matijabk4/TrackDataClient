@@ -199,7 +199,7 @@ public class FrmRider extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addComponent(lblCU, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(47, 47, 47)
+                        .addGap(65, 65, 65)
                         .addComponent(btnEdit)
                         .addGap(40, 40, 40)
                         .addComponent(btnCancel)
@@ -209,7 +209,7 @@ public class FrmRider extends javax.swing.JDialog {
                         .addComponent(btnDelete)
                         .addGap(40, 40, 40)
                         .addComponent(btnSave)))
-                .addContainerGap(82, Short.MAX_VALUE))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -248,14 +248,14 @@ public class FrmRider extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblRacingNumberError, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblSurnameError, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSave)
                     .addComponent(btnDelete)
                     .addComponent(btnEnableChanges)
                     .addComponent(btnCancel)
                     .addComponent(btnEdit))
-                .addGap(22, 22, 22))
+                .addGap(23, 23, 23))
         );
 
         pack();

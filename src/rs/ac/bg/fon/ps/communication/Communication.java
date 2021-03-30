@@ -82,7 +82,6 @@ public class Communication {
         Response response = (Response) receiver.receive();
          if(response.getResult()==Operation.LOGOUT_ALL){
             socket.close();
-             System.out.println("USLO");
             MainController.getInstance().shutdown();
             throw new Exception("Server shut down. Goodbye!");
         }

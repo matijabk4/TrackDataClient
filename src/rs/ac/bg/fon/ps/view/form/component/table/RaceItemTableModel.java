@@ -42,7 +42,7 @@ public class RaceItemTableModel extends AbstractTableModel {
         return colNames[column];
     }
 
-    public void addRaceItem(int racingNumber,Rider r, RacingTeam t, int startingPosition) {
+    public void addRaceItem(int racingNumber, Rider r, RacingTeam t, int startingPosition) {
         RaceItem raceItem = new RaceItem();
         raceItem.setRider(r);
         raceItem.setTeam(t);
@@ -59,12 +59,11 @@ public class RaceItemTableModel extends AbstractTableModel {
             case 0:
                 return item.getRaceNumber();
             case 1:
-                return item.getRider().getFirstname()+" "+item.getRider().getSurname();
+                return item.getRider().getFirstname() + " " + item.getRider().getSurname();
             case 2:
                 return item.getStartPosition();
             case 3:
-                return item.getTeam().getName();
-
+                    return item.getTeam().getName();
             default:
                 return "n/a";
         }
@@ -79,7 +78,8 @@ public class RaceItemTableModel extends AbstractTableModel {
     public Race getRace() {
         return race;
     }
-    public void removeAllRaceItems(){
+
+    public void removeAllRaceItems() {
         race.getItems().clear();
         fireTableDataChanged();
     }

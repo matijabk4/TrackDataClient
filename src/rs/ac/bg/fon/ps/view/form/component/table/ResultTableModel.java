@@ -90,7 +90,11 @@ public class ResultTableModel extends AbstractTableModel {
                 r.setTopSpeed(Double.parseDouble(String.valueOf(aValue)));
                 break;
             case 7:
-                r.setFastestLap(Time.valueOf(String.valueOf(aValue)));
+                try {
+                    r.setFastestLap(Time.valueOf(String.valueOf(aValue)));
+                } catch (Exception e) {
+                }
+                
                 break;
             case 8:
                 r.setFinishPosition((Integer.parseInt(String.valueOf(aValue))));

@@ -49,7 +49,7 @@ public class RaceViewAllController {
     }
 
     private void addFocusListener() {
-        frmViewRaces.getTxtSearchAddFocus(new FocusListener() {
+        /*frmViewRaces.getTxtSearchAddFocus(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
                 if (frmViewRaces.getTxtSearch().getText().equals("Search...")) {
@@ -68,7 +68,7 @@ public class RaceViewAllController {
                     frmViewRaces.getTxtSearch().setForeground(Color.black);
                 }
             }
-        });
+        });*/
     }
 
     private void addActionListener() {
@@ -83,6 +83,12 @@ public class RaceViewAllController {
                 frmViewRaces.getLblRaceStatus().setVisible(true);*/
             }
 
+        });
+         frmViewRaces.getBtnAddAddActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainCordinator.getInstance().openRaceAddRaceForm();
+            }
         });
         frmViewRaces.addWindowListener(new WindowAdapter() {
             @Override
@@ -116,7 +122,7 @@ public class RaceViewAllController {
                     MainCordinator.getInstance().openRiderDetailsRiderForm();*/
 
                 } else {
-                    JOptionPane.showMessageDialog(frmViewRaces, "You must select a race", "RACE RESULTS", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frmViewRaces, "Please select a race", "TrackData v1 - Race Results", JOptionPane.ERROR_MESSAGE);
                 }
 
             }
@@ -193,7 +199,7 @@ public class RaceViewAllController {
             public void windowActivated(WindowEvent e) {
                 fillTblRaces();
                 centerTableValues();
-                searchFieldSettings();
+                //searchFieldSettings();
 
             }
 
@@ -244,7 +250,7 @@ public class RaceViewAllController {
                 JOptionPane.showMessageDialog(frmViewRaces, "Racing statistics for race " + r.getName().toUpperCase() + " successfully saved!", "TrackData v1 - Save Race Results", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(frmViewRaces, "GRESKAAA");
+            JOptionPane.showMessageDialog(frmViewRaces, "Error!", "TrackData v1 - Save Race Results",JOptionPane.ERROR_MESSAGE);
             //Logger.getLogger(RaceViewAllController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -292,7 +298,7 @@ public class RaceViewAllController {
         //frmViewTeams.getTblTeams().setAutoCreateRowSorter(true);
     }
 
-    private void searchFieldSettings() {
+    /*private void searchFieldSettings() {
 
         if (!frmViewRaces.getTxtSearch().getText().equals("Search...")) {
             frmViewRaces.getTxtSearch().setText("Search...");
@@ -300,5 +306,5 @@ public class RaceViewAllController {
 
         }
 
-    }
+    }*/
 }

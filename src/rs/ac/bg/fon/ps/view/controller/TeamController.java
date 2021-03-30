@@ -5,8 +5,13 @@
  */
 package rs.ac.bg.fon.ps.view.controller;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,9 +37,34 @@ public class TeamController {
     public TeamController(FrmTeam frmTeam) {
         this.frmTeam = frmTeam;
         addActionListeners();
+        //addFocusListener();
+    }
+
+    private void addFocusListener() {
+        frmTeam.getTxtBudgetAddFocus(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (frmTeam.getTxtBudget().getText().equals("Search...")) {
+                    frmTeam.getTxtBudget().setForeground(Color.black);
+                    frmTeam.getTxtBudget().setText("");
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (frmTeam.getTxtBudget().getText().isEmpty()) {
+                    frmTeam.getTxtBudget().setText("Search...");
+                    frmTeam.getTxtBudget().setForeground(Color.gray);
+
+                } else {
+                    frmTeam.getTxtBudget().setForeground(Color.black);
+                }
+            }
+        });
     }
 
     private void addActionListeners() {
+
         frmTeam.addSaveBtnActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -59,9 +89,8 @@ public class TeamController {
                         Communication.getInstance().addTeam(team);
                         frmTeam.getTxtID().setText("ID successfully generated!");
                         System.out.println(team.getId());
-                        //JOptionPane.showMessageDialog(frmTeam, "Team successfully saved!", "TrackData v1 - Save Team", JOptionPane.INFORMATION_MESSAGE);
-                        JOptionPane.showMessageDialog(frmTeam, "Team could not be saved!", "TrackData v1 - Save Team", JOptionPane.ERROR_MESSAGE);
-                        
+                        JOptionPane.showMessageDialog(frmTeam, "Team successfully saved!", "TrackData v1 - Save Team", JOptionPane.INFORMATION_MESSAGE);
+
                         frmTeam.getTxtID().setText("");
                         frmTeam.getTxtBudget().setText("");
                         frmTeam.getTxtHQ().setText("");
@@ -90,7 +119,11 @@ public class TeamController {
             }
 
             private void cancel() {
-                 if (JOptionPane.showConfirmDialog(frmTeam, "Are you sure? Any unsaved data will be lost.", "TrackData v1 - Save Team", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                if (!frmTeam.getBtnEnableChanges().isEnabled()) {
+                    if (JOptionPane.showConfirmDialog(frmTeam, "Are you sure? Any unsaved data will be lost.", "TrackData v1 - Save Team", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                        frmTeam.dispose();
+                    }
+                } else {
                     frmTeam.dispose();
                 }
             }
@@ -151,7 +184,7 @@ public class TeamController {
         frmTeam.getLblCU().setText(currentUser.getFirstname() + " " + currentUser.getLastname());
         frmTeam.setVisible(true);
         frmTeam.setResizable(false);
-        
+
     }
 
     private void prepareView(FormMode formMode) {
@@ -159,6 +192,7 @@ public class TeamController {
         setupComponents(formMode);
         frmTeam.setResizable(false);
         frmTeam.setSize(680, 300);
+
     }
 
     /*private void fillCbMeasurementUnit() {
@@ -270,7 +304,6 @@ public class TeamController {
             frmTeam.getLblBudgetError().setText("Please insert budget");
             msg += "Budget cannot be empty!\n";
         }
-        
 
         boolean HQAllLetters = frmTeam.getTxtHQ().getText().chars().anyMatch(Character::isDigit);
         if (HQAllLetters) {
@@ -279,13 +312,12 @@ public class TeamController {
         }
         try {
             char ch = frmTeam.getTxtHQ().getText().charAt(0);
-        if (!Character.isUpperCase(ch)) {
-            frmTeam.getLblHeadquartersError().setText("Headquarter name starts with capital letter");
-            msg += "Headquarter starts with capital letter!\n";
-        }
+            if (!Character.isUpperCase(ch)) {
+                frmTeam.getLblHeadquartersError().setText("Headquarter name starts with capital letter");
+                msg += "Headquarter starts with capital letter!\n";
+            }
         } catch (Exception e) {
         }
-        
 
         if (frmTeam.getTxtHQ().getText().trim().length() < 4 && !frmTeam.getTxtHQ().getText().isEmpty()) {
             frmTeam.getLblHeadquartersError().setText("Headquarter name too short");
@@ -298,13 +330,13 @@ public class TeamController {
         }
         try {
             char ch1 = frmTeam.getTxtSponsor().getText().charAt(0);
-        if (!Character.isUpperCase(ch1)) {
-            frmTeam.getLblSponsorError().setText("Sponsor name starts with capital letter");
-            msg += "Sponsor name starts with capital letter!\n";
-        }
+            if (!Character.isUpperCase(ch1)) {
+                frmTeam.getLblSponsorError().setText("Sponsor name starts with capital letter");
+                msg += "Sponsor name starts with capital letter!\n";
+            }
         } catch (Exception e) {
         }
-        
+
         if (frmTeam.getTxtSponsor().getText().trim().length() < 2 && !frmTeam.getTxtSponsor().getText().isEmpty()) {
             frmTeam.getLblSponsorError().setText("Sponsor name too short");
             msg += "Please insert a valid sponsor.!\n";
@@ -316,14 +348,14 @@ public class TeamController {
         }
         try {
             char ch2 = frmTeam.getTxtName().getText().charAt(0);
-        if (!Character.isUpperCase(ch2)) {
-            frmTeam.getLblNameError().setText("Team name starts with capital letter");
-            msg += "Team name starts with capital letter!\n";
-        }
+            if (!Character.isUpperCase(ch2)) {
+                frmTeam.getLblNameError().setText("Team name starts with capital letter");
+                msg += "Team name starts with capital letter!\n";
+            }
 
         } catch (Exception e) {
         }
-                if (frmTeam.getTxtName().getText().trim().length() < 2 && !frmTeam.getTxtName().getText().isEmpty()) {
+        if (frmTeam.getTxtName().getText().trim().length() < 2 && !frmTeam.getTxtName().getText().isEmpty()) {
             frmTeam.getLblNameError().setText("Team name too short");
             msg += "Please insert a valid team name.!\n";
         }
@@ -334,26 +366,41 @@ public class TeamController {
         }
         try {
             char ch3 = frmTeam.getTxtManager().getText().charAt(0);
-        if (!Character.isUpperCase(ch3)) {
-            frmTeam.getLblManagerError().setText("Manager name starts with capital letter");
-            msg += "Manager name starts with capital letter!\n";
-        }
+            if (!Character.isUpperCase(ch3)) {
+                frmTeam.getLblManagerError().setText("Manager name starts with capital letter");
+                msg += "Manager name starts with capital letter!\n";
+            }
         } catch (Exception e) {
         }
-        
+
         if (frmTeam.getTxtManager().getText().trim().length() < 3 && !frmTeam.getTxtManager().getText().isEmpty()) {
             frmTeam.getLblManagerError().setText("Manager name too short");
             msg += "Please insert a valid manager name.!\n";
         }
-        if (frmTeam.getTxtBudget().getText().length() > 8) {
-            frmTeam.getLblBudgetError().setText("Budget cannot exceed 8 digits");
-            msg += "Budget cannot exceed 8 digits!\n";
+        if (frmTeam.getTxtBudget().getText().length() > 7) {
+            frmTeam.getLblBudgetError().setText("Budget cannot exceed 7 digits");
+            msg += "Budget cannot exceed 7 digits!\n";
         }
-        try {
-            Double.parseDouble(frmTeam.getTxtBudget().getText().trim());
-        } catch (Exception e) {
-            frmTeam.getLblBudgetError().setText("Please insert numeric value");
-            msg += "Racing number must be numeric value!\n";
+        if (!frmTeam.getTxtBudget().getText().isEmpty()) {
+            try {
+                Double.parseDouble(frmTeam.getTxtBudget().getText().trim());
+
+            } catch (Exception e) {
+                frmTeam.getLblBudgetError().setText("Please insert numeric value");
+                msg += "Racing number must be numeric value!\n";
+            }
+        }
+        if (!frmTeam.getTxtBudget().getText().isEmpty()) {
+            try {
+                double budget = Double.parseDouble(frmTeam.getTxtBudget().getText().trim());
+                if (budget < 100000) {
+                    frmTeam.getLblBudgetError().setText("Minimum budget is 100 000");
+                    msg += "Racing number must be numeric value!\n";
+                }
+            } catch (Exception e) {
+                frmTeam.getLblBudgetError().setText("Please insert numeric value");
+                msg += "Racing number must be numeric value!\n";
+            }
         }
         if (!msg.isEmpty()) {
             throw new Exception(msg);
@@ -389,10 +436,8 @@ public class TeamController {
         if (frmTeam.getTxtBudget().getText().isEmpty() || frmTeam.getTxtBudget().getText() == "") {
             frmTeam.getLblBudgetError().setText("Please insert budget");
             msg += "Budget cannot be empty!\n";
-        } 
-           
+        }
 
-        
         List<RacingTeam> teams = Communication.getInstance().getAllTeams();
         for (RacingTeam team : teams) {
             if (team.getName().toUpperCase().equals(frmTeam.getTxtName().getText().toUpperCase()) && team.getId() != Integer.parseInt(frmTeam.getTxtID().getText().trim())) {
@@ -407,13 +452,12 @@ public class TeamController {
         }
         try {
             char ch = frmTeam.getTxtHQ().getText().charAt(0);
-        if (!Character.isUpperCase(ch)) {
-            frmTeam.getLblHeadquartersError().setText("Headquarter name starts with capital letter");
-            msg += "Headquarter starts with capital letter!\n";
-        }
+            if (!Character.isUpperCase(ch)) {
+                frmTeam.getLblHeadquartersError().setText("Headquarter name starts with capital letter");
+                msg += "Headquarter starts with capital letter!\n";
+            }
         } catch (Exception e) {
         }
-        
 
         if (frmTeam.getTxtHQ().getText().trim().length() < 2 && !frmTeam.getTxtHQ().getText().isEmpty()) {
             frmTeam.getLblHeadquartersError().setText("Headquarter name too short");
@@ -426,13 +470,13 @@ public class TeamController {
         }
         try {
             char ch1 = frmTeam.getTxtSponsor().getText().charAt(0);
-        if (!Character.isUpperCase(ch1)) {
-            frmTeam.getLblSponsorError().setText("Sponsor name starts with capital letter");
-            msg += "Sponsor name starts with capital letter!\n";
-        }
+            if (!Character.isUpperCase(ch1)) {
+                frmTeam.getLblSponsorError().setText("Sponsor name starts with capital letter");
+                msg += "Sponsor name starts with capital letter!\n";
+            }
         } catch (Exception e) {
         }
-        
+
         if (frmTeam.getTxtSponsor().getText().trim().length() < 2 && !frmTeam.getTxtSponsor().getText().isEmpty()) {
             frmTeam.getLblSponsorError().setText("Sponsor name too short");
             msg += "Please insert a valid sponsor.!\n";
@@ -444,13 +488,13 @@ public class TeamController {
         }
         try {
             char ch2 = frmTeam.getTxtName().getText().charAt(0);
-        if (!Character.isUpperCase(ch2)) {
-            frmTeam.getLblNameError().setText("Team name starts with capital letter");
-            msg += "Team name starts with capital letter!\n";
-        }
+            if (!Character.isUpperCase(ch2)) {
+                frmTeam.getLblNameError().setText("Team name starts with capital letter");
+                msg += "Team name starts with capital letter!\n";
+            }
         } catch (Exception e) {
         }
-        
+
         if (frmTeam.getTxtName().getText().trim().length() < 4 && !frmTeam.getTxtName().getText().isEmpty()) {
             frmTeam.getLblNameError().setText("Team name too short");
             msg += "Please insert a valid team name.!\n";
@@ -462,29 +506,53 @@ public class TeamController {
         }
         try {
             char ch3 = frmTeam.getTxtManager().getText().charAt(0);
-        if (!Character.isUpperCase(ch3)) {
-            frmTeam.getLblManagerError().setText("Manager name starts with capital letter");
-            msg += "Manager name starts with capital letter!\n";
-        }
+            if (!Character.isUpperCase(ch3)) {
+                frmTeam.getLblManagerError().setText("Manager name starts with capital letter");
+                msg += "Manager name starts with capital letter!\n";
+            }
         } catch (Exception e) {
         }
-        
+
         if (frmTeam.getTxtManager().getText().trim().length() < 4 && !frmTeam.getTxtManager().getText().isEmpty()) {
             frmTeam.getLblManagerError().setText("Manager name too short");
             msg += "Please insert a valid manager name.!\n";
         }
-        if (frmTeam.getTxtBudget().getText().length() > 8) {
-            frmTeam.getLblBudgetError().setText("Budget cannot exceed 8 digits");
-            msg += "Budget cannot exceed 8 digits!\n";
+        if (frmTeam.getTxtBudget().getText().length() > 7) {
+            frmTeam.getLblBudgetError().setText("Budget cannot exceed 7 digits");
+            msg += "Budget cannot exceed 7 digits!\n";
         }
-         try {
+        if (!frmTeam.getTxtBudget().getText().isEmpty()) {
+            try {
                 Double.parseDouble(frmTeam.getTxtBudget().getText().trim());
             } catch (Exception e) {
                 frmTeam.getLblBudgetError().setText("Please insert numeric value");
                 msg += "Racing number must be numeric value!\n";
             }
+        }
+        if (!frmTeam.getTxtBudget().getText().isEmpty()) {
+            try {
+                double budget = Double.parseDouble(frmTeam.getTxtBudget().getText().trim());
+                if (budget < 100000) {
+                    frmTeam.getLblBudgetError().setText("Minimum budget is 100 000");
+                    msg += "Racing number must be numeric value!\n";
+                }
+            } catch (Exception e) {
+                frmTeam.getLblBudgetError().setText("Please insert numeric value");
+                msg += "Racing number must be numeric value!\n";
+            }
+        }
         if (!msg.isEmpty()) {
             throw new Exception(msg);
         }
+    }
+
+    private void budgetFieldSettings() {
+
+        if (!frmTeam.getTxtBudget().getText().equals("Search...")) {
+            frmTeam.getTxtBudget().setText("Search...");
+            frmTeam.getTxtBudget().setForeground(Color.gray);
+
+        }
+
     }
 }

@@ -6,6 +6,7 @@
 package rs.ac.bg.fon.ps.view.form;
 
 import java.awt.event.ActionListener;
+import java.awt.event.FocusListener;
 import javax.swing.JLabel;
 
 /**
@@ -381,5 +382,8 @@ public class FrmTeam extends javax.swing.JDialog {
 
     public JLabel getLblManagerError() {
         return lblManagerError;
+    }
+    public void getTxtBudgetAddFocus(FocusListener focusListener) {
+        txtBudget.addFocusListener(focusListener);
     }
 }

@@ -54,7 +54,6 @@ public class FrmViewRaces extends javax.swing.JDialog {
         btnSaveRaceResults = new javax.swing.JButton();
         btnDetails = new javax.swing.JButton();
         btnAdd = new javax.swing.JButton();
-        txtSearch = new javax.swing.JTextField();
         lblRaceName = new javax.swing.JLabel();
         lblRaceStatus = new javax.swing.JLabel();
         lblRName = new javax.swing.JLabel();
@@ -140,12 +139,6 @@ public class FrmViewRaces extends javax.swing.JDialog {
             }
         });
 
-        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtSearchKeyReleased(evt);
-            }
-        });
-
         lblRaceName.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lblRaceName.setText("Race:");
 
@@ -172,19 +165,16 @@ public class FrmViewRaces extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 660, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(btnSetRaceResult, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(btnDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(lblRaceStatus)
-                                            .addComponent(lblRaceName)
-                                            .addComponent(lblStat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(lblRName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 660, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btnSetRaceResult, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblRaceStatus)
+                                    .addComponent(lblRaceName)
+                                    .addComponent(lblStat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblRName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
@@ -197,7 +187,6 @@ public class FrmViewRaces extends javax.swing.JDialog {
                     .addComponent(lblCU, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnDetails)
                         .addGap(18, 18, 18)
@@ -211,30 +200,15 @@ public class FrmViewRaces extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblRaceStatus)
                         .addGap(18, 18, 18)
-                        .addComponent(lblStat, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 113, Short.MAX_VALUE)
+                        .addComponent(lblStat, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15))
+                .addGap(53, 53, 53))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
-        RaceTableModel table = (RaceTableModel) tblRaces.getModel();
-        String search = txtSearch.getText().trim();
-
-        //      String pretrazi2 = txtPretrazi.getText().toUpperCase(); // za registraciju
-        TableRowSorter<RaceTableModel> tr = new TableRowSorter<>(table);
-        tblRaces.setRowSorter(tr);
-
-        tr.setRowFilter(RowFilter.regexFilter(search));
-        tr.setRowFilter(RowFilter.regexFilter("(?i)" + search));
-
-        //       tr.setRowFilter(RowFilter.regexFilter(pretrazi2));
-    }//GEN-LAST:event_txtSearchKeyReleased
 
     private void btnSetRaceResultActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSetRaceResultActionPerformed
         // TODO add your handling code here:
@@ -264,7 +238,6 @@ public class FrmViewRaces extends javax.swing.JDialog {
     private javax.swing.JLabel lblStat;
     private javax.swing.JTable tblRaces;
     private javax.swing.JTable tblResults;
-    private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 
     public javax.swing.JLabel getjLabel1() {
@@ -315,13 +288,13 @@ public class FrmViewRaces extends javax.swing.JDialog {
         btnDetails.addActionListener(actionListener);
     }
 
-    public JTextField getTxtSearch() {
+    /*public JTextField getTxtSearch() {
         return txtSearch;
     }
 
     public void getTxtSearchAddFocus(FocusListener focusListener) {
         txtSearch.addFocusListener(focusListener);
-    }
+    }*/
 
     public JLabel getLblRaceName() {
         return lblRaceName;
@@ -338,5 +311,7 @@ public class FrmViewRaces extends javax.swing.JDialog {
     public JLabel getLblRName() {
         return lblRName;
     }
-
+public void getBtnAddAddActionListener(ActionListener actionListener) {
+        btnAdd.addActionListener(actionListener);
+    }
 }

@@ -168,5 +168,11 @@ public class MainCordinator {
         browseRacesController.openForm();
     }
 
+    public void openRaceAddRaceForm() {
+        FrmRace raceAdd = new FrmRace(mainContoller.getFrmMain(), true);
+        RaceController raceController = new RaceController(raceAdd);
+        raceController.openForm(FormMode.FORM_ADD);
+    }
+
 
 }

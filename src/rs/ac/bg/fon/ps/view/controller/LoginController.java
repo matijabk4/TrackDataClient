@@ -61,6 +61,24 @@ public class LoginController {
             }
 
         });
+        frmLogin.getTxtUsernameAddKeyPressed(new KeyListener() {
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    loginUser(e);
+                }
+            }
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+
+        });
     }
 
     private void resetForm() {
@@ -102,7 +120,7 @@ public class LoginController {
             MainCordinator.getInstance().addParam(Constants.CURRENT_USER, user);
             MainCordinator.getInstance().openMainForm();
         } catch (Exception e) {
-            if(e.getMessage().equals("Unknown user!")){
+            if(e.getMessage().equals("Unknown user!") || e.getMessage().contains("refused")){
                 JOptionPane.showMessageDialog(frmLogin, e.getMessage(), "TrackData v1 - Login Error", JOptionPane.ERROR_MESSAGE);
         
             }
@@ -129,7 +147,9 @@ public class LoginController {
             MainCordinator.getInstance().addParam(Constants.CURRENT_USER, user);
             MainCordinator.getInstance().openMainForm();
         } catch (Exception e) {
+            if(e.getMessage().equals("Unknown user!")){
             JOptionPane.showMessageDialog(frmLogin, e.getMessage(), "TrackData v1 - Login Error", JOptionPane.ERROR_MESSAGE);
+        }
         }
     }
 }

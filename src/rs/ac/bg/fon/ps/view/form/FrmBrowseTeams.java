@@ -43,6 +43,7 @@ public class FrmBrowseTeams extends javax.swing.JDialog {
         txtSearch = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("TrackData v1 - Browse Teams");
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 0, 0));

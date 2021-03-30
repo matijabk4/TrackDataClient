@@ -41,7 +41,7 @@ public class RiderViewAllController {
     }
     
     private void addFocusListener() {
-        frmViewRiders.getTxtSearchAddFocus(new FocusListener() {
+        /*frmViewRiders.getTxtSearchAddFocus(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
                 if (frmViewRiders.getTxtSearch().getText().equals("Search...")) {
@@ -60,7 +60,7 @@ public class RiderViewAllController {
                     frmViewRiders.getTxtSearch().setForeground(Color.black);
                 }
             }
-        });
+        });*/
     }
     
     private void addActionListener() {
@@ -75,7 +75,7 @@ public class RiderViewAllController {
                     MainCordinator.getInstance().openRiderDetailsRiderForm();
                     
                 } else {
-                    JOptionPane.showMessageDialog(frmViewRiders, "You must select a rider", "RIDER DETAILS", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frmViewRiders, "Please select a rider", "TrackData v1 - Rider Details", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         });
@@ -143,11 +143,11 @@ public class RiderViewAllController {
     
     private void searchFieldSettings() {
         
-        if (!frmViewRiders.getTxtSearch().getText().equals("Search...")) {
+        /*if (!frmViewRiders.getTxtSearch().getText().equals("Search...")) {
             frmViewRiders.getTxtSearch().setText("Search...");
             frmViewRiders.getTxtSearch().setForeground(Color.gray);
             
-        }
+        }*/
         
     }
     

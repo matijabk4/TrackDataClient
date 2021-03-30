@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,7 +20,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
 import rs.ac.bg.fon.ps.communication.Communication;
 import rs.ac.bg.fon.ps.domain.Race;
 import rs.ac.bg.fon.ps.domain.RaceItem;
@@ -60,6 +64,8 @@ public class RaceController {
         fillDefaultValues();
         fillTblRace();
         setupComponents(formMode);
+        frmRace.getTblRaceItem().getTableHeader().setResizingAllowed(false);
+        frmRace.getTblRaceItem().getTableHeader().setReorderingAllowed(false);
         frmRace.setResizable(false);
     }
 
@@ -189,14 +195,22 @@ public class RaceController {
             private void addRaceItem() {
 
                 try {
-                    Rider rider = (Rider) frmRace.getCbRider().getSelectedItem();
+                    RaceItem r = new RaceItem();
+                    Rider rider = null;
+                    RacingTeam team = null;
+                    if(frmRace.getCbRider().getSelectedIndex()!=-1){
+                    rider = (Rider) frmRace.getCbRider().getSelectedItem();
+                    }
                     int startingPos = Integer.parseInt(frmRace.getTxtStartingPosition().getText().trim());
                     int racingNum = Integer.parseInt(frmRace.getTxtRacingNumber().getText().trim());
-                    RacingTeam team = (RacingTeam) frmRace.getCbTeam().getSelectedItem();
+                    if(frmRace.getCbTeam().getSelectedIndex()!=-1){
+                        team = (RacingTeam) frmRace.getCbTeam().getSelectedItem();
+                    }
+                    
                     RaceItemTableModel rtm = (RaceItemTableModel) frmRace.getTblRaceItem().getModel();
                     List<RaceItem> raceItems = rtm.getRace().getItems();
 
-                    RaceItem r = new RaceItem();
+                    
                     r.setRaceNumber(racingNum);
                     r.setRider(rider);
                     r.setStartPosition(startingPos);
@@ -206,7 +220,6 @@ public class RaceController {
                     boolean position = false;
                     for (RaceItem i : raceItems) {
                         if (i.getRider() == null) {
-                            System.out.println("RACE ITEM RIDER JE NULL");
 
                         }
                         if (i.getRider().toString().equals(rider.toString())) {
@@ -251,12 +264,20 @@ public class RaceController {
 
             private void removeRaceItem() {
                 int row = frmRace.getTblRaceItem().getSelectedRow();
-                if (row >= 0) {
-                    RaceItemTableModel rtm = (RaceItemTableModel) frmRace.getTblRaceItem().getModel();
-                    rtm.removeRaceItem(row);
-                } else {
-                    JOptionPane.showMessageDialog(frmRace, "Please select a row to delete.", "TrackData v1 - Save Race", JOptionPane.INFORMATION_MESSAGE);
+                RaceItemTableModel rtm = (RaceItemTableModel) frmRace.getTblRaceItem().getModel();
+                List<RaceItem> items = rtm.getRace().getItems();
+                boolean empty = false;
+                if (items.isEmpty()) {
+                    JOptionPane.showMessageDialog(frmRace, "Riders list is empty", "TrackData v1 - Save Race", JOptionPane.INFORMATION_MESSAGE);
+                    empty = true;
+                }
+                if (!empty) {
+                    if (row >= 0) {
+                        rtm.removeRaceItem(row);
+                    } else {
+                        JOptionPane.showMessageDialog(frmRace, "Please select a row to delete.", "TrackData v1 - Save Race", JOptionPane.INFORMATION_MESSAGE);
 
+                    }
                 }
 
             }
@@ -270,6 +291,7 @@ public class RaceController {
             private void saveRace() {
                 try {
                     validateForm();
+
                     DateFormat df = new SimpleDateFormat("dd.MM.yyyy.");
                     RaceItemTableModel rtm = (RaceItemTableModel) frmRace.getTblRaceItem().getModel();
                     Race race = new Race();
@@ -280,20 +302,32 @@ public class RaceController {
                     race.setItems(rtm.getRace().getItems());
                     race.setCreatedOn(new java.sql.Timestamp(new java.util.Date().getTime()));
 
-                    if (JOptionPane.showConfirmDialog(frmRace, "Are you sure you want to save this race?", "TrackData v1 - Save Race", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                        Communication.getInstance().addRace(race);
-                        frmRace.getTxtID().setText(String.valueOf(race.getId()));
-                        JOptionPane.showMessageDialog(frmRace, "Race successfully saved!", "TrackData v1 - Save Race", JOptionPane.INFORMATION_MESSAGE);
-                        frmRace.getTxtID().setText("");
-                        frmRace.getTxtDate().setText("");
-                        frmRace.getTxtRace().setText("");
-                        frmRace.getTxtTotalLaps().setText("");
-                        frmRace.getTxtTrack().setText("");
-                        frmRace.getTxtRacingNumber().setText("");
-                        frmRace.getTxtStartingPosition().setText("");
-                        frmRace.getCbTeam().setSelectedIndex(-1);
-                        frmRace.getCbRider().setSelectedIndex(-1);
-                        clearTableRaceItems(rtm);
+                    List<RaceItem> items = race.getItems();
+                    int size = items.size();
+                    boolean error = false;
+                    for (RaceItem item : items) {
+                        if (item.getStartPosition() > size) {
+                            error = true;
+                            JOptionPane.showMessageDialog(frmRace, "Starting positions must be in range [1," + size + "]\n", "TrackData v1 - Edit race", JOptionPane.INFORMATION_MESSAGE);
+                            break;
+                        }
+                    }
+                    if (!error) {
+                        if (JOptionPane.showConfirmDialog(frmRace, "Are you sure you want to save this race?", "TrackData v1 - Save Race", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                            Communication.getInstance().addRace(race);
+                            frmRace.getTxtID().setText(String.valueOf(race.getId()));
+                            JOptionPane.showMessageDialog(frmRace, "Race successfully saved!", "TrackData v1 - Save Race", JOptionPane.INFORMATION_MESSAGE);
+                            frmRace.getTxtID().setText("");
+                            frmRace.getTxtDate().setText("");
+                            frmRace.getTxtRace().setText("");
+                            frmRace.getTxtTotalLaps().setText("");
+                            frmRace.getTxtTrack().setText("");
+                            frmRace.getTxtRacingNumber().setText("");
+                            frmRace.getTxtStartingPosition().setText("");
+                            frmRace.getCbTeam().setSelectedIndex(-1);
+                            frmRace.getCbRider().setSelectedIndex(-1);
+                            clearTableRaceItems(rtm);
+                        }
                     }
 
                 } catch (Exception ex) {
@@ -319,20 +353,32 @@ public class RaceController {
             }
 
             private void edit() {
-                Race race = makeRaceFromForm();
                 try {
-                    if (JOptionPane.showConfirmDialog(frmRace, "Are you sure you want to update this race?", "TrackData v1 - Edit race", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                        List<RaceItem> items = race.getItems();
+                    Race race = makeRaceFromForm();
+                    validateFormEdit();
 
-                        Communication.getInstance().editRace(race);
+                    List<RaceItem> items = race.getItems();
+                    int size = items.size();
+                    boolean error = false;
+                    for (RaceItem item : items) {
+                        if (item.getStartPosition() > size) {
+                            error = true;
+                            JOptionPane.showMessageDialog(frmRace, "Starting positions must be in range [1," + size + "]\n", "TrackData v1 - Edit race", JOptionPane.INFORMATION_MESSAGE);
+                            break;
+                        }   
+                    }
+                    if (!error) {
+                        if (JOptionPane.showConfirmDialog(frmRace, "Are you sure you want to update this race?", "TrackData v1 - Edit race", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                            Communication.getInstance().editRace(race);
 
-                        Communication.getInstance().editRaceItems(race, items);
-                        JOptionPane.showMessageDialog(frmRace, "Race information updated successfully!\n", "TrackData v1 - Edit race", JOptionPane.INFORMATION_MESSAGE);
-                        frmRace.dispose();
+                            Communication.getInstance().editRaceItems(race, items);
+                            JOptionPane.showMessageDialog(frmRace, "Race information updated successfully!\n", "TrackData v1 - Edit race", JOptionPane.INFORMATION_MESSAGE);
+                            frmRace.dispose();
+                        }
                     }
 
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(frmRace, "Error editting race!\n" + ex.getMessage(), "TrackData v1 - Edit race", JOptionPane.ERROR_MESSAGE);
+                    //JOptionPane.showMessageDialog(frmRace, "Error editting race!\n" + ex.getMessage(), "TrackData v1 - Edit race", JOptionPane.ERROR_MESSAGE);
                     //Logger.getLogger(RiderController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -366,15 +412,175 @@ public class RaceController {
             }
 
             private void cancel() {
-
-                if (JOptionPane.showConfirmDialog(frmRace, "Are you sure? Any unsaved data will be lost.", "TrackData v1 - Save Race", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                if (!frmRace.getBtnEnableChanges().isEnabled()) {
+                    if (JOptionPane.showConfirmDialog(frmRace, "Are you sure? Any unsaved data will be lost.", "TrackData v1 - Save Race", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                        frmRace.dispose();
+                    }
+                } else {
                     frmRace.dispose();
                 }
             }
         });
+         frmRace.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowActivated(WindowEvent e) {
+                centerTableValues();
+            }
+
+            private void centerTableValues() {
+                 // center column names
+        ((DefaultTableCellRenderer) frmRace.getTblRaceItem().getTableHeader().getDefaultRenderer())
+                .setHorizontalAlignment(JLabel.CENTER);
+
+        // center column values
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        
+        for (int col = 0; col < frmRace.getTblRaceItem().getColumnCount(); col++) {
+            frmRace.getTblRaceItem().getColumnModel().getColumn(col).setCellRenderer(centerRenderer);
+        }
+
+        // frmViewRiders.getTblRiders().setAutoCreateRowSorter(true);
+            }
+            
+        });
     }
 
     private void validateForm() throws Exception {
+        frmRace.getLblDateError().setText("");
+        frmRace.getLblRaceNameError().setText("");
+        frmRace.getLblTotalLapsError().setText("");
+        frmRace.getLblTrackError().setText("");
+        RaceItemTableModel rtm = (RaceItemTableModel) frmRace.getTblRaceItem().getModel();
+
+        String msg = "";
+
+        if (frmRace.getTxtTrack().getText().isEmpty()) {
+            frmRace.getLblTrackError().setText("Please insert track name");
+            msg += "Firstname cannot be empty!\n";
+
+        }
+        if (frmRace.getTxtTotalLaps().getText().chars().anyMatch(Character::isAlphabetic)) {
+            frmRace.getLblTotalLapsError().setText("Please insert numeric value");
+        }
+        if (frmRace.getTxtTotalLaps().getText().isEmpty()) {
+            frmRace.getLblTotalLapsError().setText("Please insert number of laps");
+            msg += "Surname cannot be empty!\n";
+        }
+        if (frmRace.getTxtRace().getText().isEmpty()) {
+            frmRace.getLblRaceNameError().setText("Please insert race name");
+            msg += "Nationality cannot be empty!\n";
+        }
+        if (frmRace.getTxtDate().getText().chars().anyMatch(Character::isAlphabetic)) {
+            frmRace.getLblDateError().setText("Bad date format");
+            msg += "Date must be in format dd.MM.yyyy.";
+        }
+        if (frmRace.getTxtDate().getText().isEmpty()) {
+            frmRace.getLblDateError().setText("Please insert race date");
+            msg += "Racing number cannot be empty!\n";
+        }
+        try {
+            char ch = frmRace.getTxtRace().getText().charAt(0);
+            if (!Character.isUpperCase(ch)) {
+                frmRace.getLblRaceNameError().setText("Race name starts with capital letter");
+                msg += "Race name starts with capital letter!\n";
+            }
+        } catch (Exception e) {
+        }
+        try {
+            char ch = frmRace.getTxtTrack().getText().charAt(0);
+            if (!Character.isUpperCase(ch)) {
+                frmRace.getLblTrackError().setText("Track name starts with capital letter");
+                msg += "Track name starts with capital letter!\n";
+            }
+        } catch (Exception e) {
+        }
+        try {
+            String date = frmRace.getTxtDate().getText();
+            String[] dateArray = date.split("\\.");
+            String s1 = dateArray[0];
+            String s2 = dateArray[1];
+            String s3 = dateArray[2];
+            int day = Integer.parseInt(s1);
+            int month = Integer.parseInt(s2);
+            int year = Integer.parseInt(s3);
+            int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+            int nextYear = currentYear + 1;
+            if (day > 31 || month > 12) {
+                frmRace.getLblDateError().setText("Bad date");
+                msg += "Date must be in format dd.MM.yyyy.";
+            }
+            if (year > nextYear) {
+                frmRace.getLblDateError().setText("Year is limited to " + nextYear);
+                msg += "Date must be in format dd.MM.yyyy.";
+            }
+        } catch (Exception e) {
+        }
+
+        try {
+            if (Integer.parseInt(frmRace.getTxtTotalLaps().getText().trim()) < 20 || Integer.parseInt(frmRace.getTxtTotalLaps().getText().trim()) > 23) {
+                frmRace.getLblTotalLapsError().setText("Number of laps must be in range [20-23]");
+                msg += "Race cannot have over 23 laps!\n";
+            }
+        } catch (Exception e) {
+        }
+        if (!frmRace.getTxtDate().getText().isEmpty()) {
+            DateFormat df = new SimpleDateFormat("dd.MM.yyyy.");
+            try {
+                df.parse(frmRace.getTxtDate().getText().trim());
+            } catch (Exception e) {
+                frmRace.getLblDateError().setText("Bad date format");
+                msg += "Date must be in format dd.MM.yyyy.";
+            }
+        }
+        long count = frmRace.getTxtDate().getText().chars().filter(ch -> ch == '.').count();
+        if (count > 3) {
+            frmRace.getLblDateError().setText("Bad date format");
+            msg += "Date must be in format dd.MM.yyyy.";
+        }
+        boolean TrackAllLetters = frmRace.getTxtTrack().getText().chars().anyMatch(Character::isDigit);
+        if (TrackAllLetters) {
+            frmRace.getLblTrackError().setText("Please insert a valid track name");
+            msg += "Track name contains letters only!\n";
+        }
+
+        List<RaceItem> raceItems = rtm.getRace().getItems();
+        if (raceItems.size() < 6) {
+            if (frmRace.getLblTrackError().getText().isEmpty() && frmRace.getLblDateError().getText().isEmpty()
+                    && frmRace.getLblRaceNameError().getText().isEmpty()
+                    && frmRace.getLblTotalLapsError().getText().isEmpty()) {
+                JOptionPane.showMessageDialog(frmRace, "Race must have at least 6 contestants", "TrackData v1 - Save Race", JOptionPane.INFORMATION_MESSAGE);
+                msg += "Race must have at least 6 contestants!\n";
+            }
+        }
+        if (!msg.isEmpty()) {
+            throw new Exception(msg);
+        }
+    }
+
+    private Race makeRaceFromForm() {
+        Race r = new Race();
+        r.setId(Integer.parseInt(frmRace.getTxtID().getText().trim()));
+        r.setTrack(frmRace.getTxtTrack().getText().trim());
+        DateFormat df = new SimpleDateFormat("dd.MM.yyyy.");
+        try {
+            r.setDate(df.parse(frmRace.getTxtDate().getText().trim()));
+        } catch (ParseException ex) {
+            //Logger.getLogger(RaceController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        r.setUpdatedOn(new java.sql.Timestamp(new java.util.Date().getTime()));
+        r.setName(frmRace.getTxtRace().getText().trim());
+        r.setTotalLaps(Integer.parseInt(frmRace.getTxtTotalLaps().getText().trim()));
+        RaceItemTableModel rtm = (RaceItemTableModel) frmRace.getTblRaceItem().getModel();
+
+        List<RaceItem> items = rtm.getRace().getItems();
+
+        r.setItems(items);
+
+        return r;
+    }
+
+    private void validateFormEdit() throws Exception {
         frmRace.getLblDateError().setText("");
         frmRace.getLblRaceNameError().setText("");
         frmRace.getLblTotalLapsError().setText("");
@@ -418,14 +624,34 @@ public class RaceController {
             int month = Integer.parseInt(s2);
             int year = Integer.parseInt(s3);
             int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-            if (day > 31 || month > 12 || year > currentYear + 1) {
-                frmRace.getLblDateError().setText("Bad date format");
+            int nextYear = currentYear + 1;
+            if (day > 31 || month > 12) {
+                frmRace.getLblDateError().setText("Bad date");
+                msg += "Date must be in format dd.MM.yyyy.";
+            }
+            if (year > nextYear) {
+                frmRace.getLblDateError().setText("Year is limited to " + nextYear);
                 msg += "Date must be in format dd.MM.yyyy.";
             }
 
         } catch (Exception e) {
         }
-
+        try {
+            char ch = frmRace.getTxtRace().getText().charAt(0);
+            if (!Character.isUpperCase(ch)) {
+                frmRace.getLblRaceNameError().setText("Race name starts with capital letter");
+                msg += "Race name starts with capital letter!\n";
+            }
+        } catch (Exception e) {
+        }
+        try {
+            char ch = frmRace.getTxtTrack().getText().charAt(0);
+            if (!Character.isUpperCase(ch)) {
+                frmRace.getLblTrackError().setText("Track name starts with capital letter");
+                msg += "Track name starts with capital letter!\n";
+            }
+        } catch (Exception e) {
+        }
         try {
             if (Integer.parseInt(frmRace.getTxtTotalLaps().getText().trim()) < 20 || Integer.parseInt(frmRace.getTxtTotalLaps().getText().trim()) > 23) {
                 frmRace.getLblTotalLapsError().setText("Number of laps must be in range [20-23]");
@@ -442,6 +668,11 @@ public class RaceController {
                 msg += "Date must be in format dd.MM.yyyy.";
             }
         }
+        long count = frmRace.getTxtDate().getText().chars().filter(ch -> ch == '.').count();
+        if (count > 3) {
+            frmRace.getLblDateError().setText("Bad date format");
+            msg += "Date must be in format dd.MM.yyyy.";
+        }
         boolean TrackAllLetters = frmRace.getTxtTrack().getText().chars().anyMatch(Character::isDigit);
         if (TrackAllLetters) {
             frmRace.getLblTrackError().setText("Please insert a valid track name");
@@ -449,33 +680,15 @@ public class RaceController {
         }
         List<RaceItem> raceItems = rtm.getRace().getItems();
         if (raceItems.size() < 6) {
-            JOptionPane.showMessageDialog(frmRace, "Race must have at least 6 contestants", "TrackData v1 - Save Race", JOptionPane.INFORMATION_MESSAGE);
-            msg += "Race must have at least 6 contestants!\n";
+            if (frmRace.getLblTrackError().getText().isEmpty() && frmRace.getLblDateError().getText().isEmpty()
+                    && frmRace.getLblRaceNameError().getText().isEmpty()
+                    && frmRace.getLblTotalLapsError().getText().isEmpty()) {
+                JOptionPane.showMessageDialog(frmRace, "Race must have at least 6 contestants", "TrackData v1 - Save Race", JOptionPane.INFORMATION_MESSAGE);
+                msg += "Race must have at least 6 contestants!\n";
+            }
         }
         if (!msg.isEmpty()) {
             throw new Exception(msg);
         }
-    }
-
-    private Race makeRaceFromForm() {
-        Race r = new Race();
-        r.setId(Integer.parseInt(frmRace.getTxtID().getText().trim()));
-        r.setTrack(frmRace.getTxtTrack().getText().trim());
-        DateFormat df = new SimpleDateFormat("dd.MM.yyyy.");
-        try {
-            r.setDate(df.parse(frmRace.getTxtDate().getText().trim()));
-        } catch (ParseException ex) {
-            //Logger.getLogger(RaceController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        r.setUpdatedOn(new java.sql.Timestamp(new java.util.Date().getTime()));
-        r.setName(frmRace.getTxtRace().getText().trim());
-        r.setTotalLaps(Integer.parseInt(frmRace.getTxtTotalLaps().getText().trim()));
-        RaceItemTableModel rtm = (RaceItemTableModel) frmRace.getTblRaceItem().getModel();
-
-        List<RaceItem> items = rtm.getRace().getItems();
-        
-        r.setItems(items);
-
-        return r;
     }
 }
